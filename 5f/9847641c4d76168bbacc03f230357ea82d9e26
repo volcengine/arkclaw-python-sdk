@@ -1,0 +1,36 @@
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.3.4",
+  "base_commit_sha": "5f9847641c4d76168bbacc03f230357ea82d9e26",
+  "prompts": {
+    "19679acc9278baa6": {
+      "agent_id": {
+        "tool": "trae-cue",
+        "id": "ai_tab-icr-fb7be90a-3f47-4a4c-80e3-b781ce33927c",
+        "model": "default"
+      },
+      "human_author": "shenkaiwen.666 <shenkaiwen.666@bytedance.com>",
+      "messages": [],
+      "total_additions": 1,
+      "total_deletions": 1,
+      "accepted_lines": 0,
+      "overriden_lines": 0
+    },
+    "b737a57dd478cbf9": {
+      "agent_id": {
+        "tool": "trae-cue",
+        "id": "ai_tab-icr-d37f049c-e4ae-410f-9fab-d33743965743",
+        "model": "default"
+      },
+      "human_author": "shenkaiwen.666 <shenkaiwen.666@bytedance.com>",
+      "messages": [],
+      "total_additions": 1,
+      "total_deletions": 1,
+      "accepted_lines": 0,
+      "overriden_lines": 0
+    }
+  },
+  "attestation_metadata": {},
+  "remote_transcripts": {}
+}
