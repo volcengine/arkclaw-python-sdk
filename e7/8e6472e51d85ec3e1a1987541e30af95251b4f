@@ -1,0 +1,776 @@
+tests/test_integration_smoke.py
+  12406ab72cb1e7e4 1-14 gitai:{"mixed_line_ranges":[],"operations":[{"operation_id":"6a1d484cd43055293471ccdc","tool_type":"agent","tool_id":"Edit","line_ranges":[{"Range":[1,14]}]}]}
+arkclaw/cli/__init__.py
+  12406ab72cb1e7e4 1-14 gitai:{"mixed_line_ranges":[],"operations":[{"operation_id":"6a1d484cd43055293471ccdc","tool_type":"agent","tool_id":"Edit","line_ranges":[{"Range":[1,14]}]}]}
+arkclaw/cli/command_jobs.py
+  12406ab72cb1e7e4 1-14 gitai:{"mixed_line_ranges":[],"operations":[{"operation_id":"6a1d484cd43055293471ccdc","tool_type":"agent","tool_id":"Edit","line_ranges":[{"Range":[1,14]}]}]}
+arkclaw/spec.py
+  12406ab72cb1e7e4 1-14 gitai:{"mixed_line_ranges":[],"operations":[{"operation_id":"6a1d484cd43055293471ccdc","tool_type":"agent","tool_id":"Edit","line_ranges":[{"Range":[1,14]}]}]}
+arkclaw/transport.py
+  12406ab72cb1e7e4 1-14 gitai:{"mixed_line_ranges":[],"operations":[{"operation_id":"6a1d484cd43055293471ccdc","tool_type":"agent","tool_id":"Edit","line_ranges":[{"Range":[1,14]}]}]}
+arkclaw/cli/__main__.py
+  12406ab72cb1e7e4 1-14 gitai:{"mixed_line_ranges":[],"operations":[{"operation_id":"6a1d484cd43055293471ccdc","tool_type":"agent","tool_id":"Edit","line_ranges":[{"Range":[1,14]}]}]}
+examples/quickstart.py
+  12406ab72cb1e7e4 1-14 gitai:{"mixed_line_ranges":[],"operations":[{"operation_id":"6a1d484cd43055293471ccdc","tool_type":"agent","tool_id":"Edit","line_ranges":[{"Range":[1,14]}]}]}
+arkclaw/cli/users.py
+  12406ab72cb1e7e4 1-14 gitai:{"mixed_line_ranges":[],"operations":[{"operation_id":"6a1d484cd43055293471ccdc","tool_type":"agent","tool_id":"Edit","line_ranges":[{"Range":[1,14]}]}]}
+examples/send_message.py
+  12406ab72cb1e7e4 1-14 gitai:{"mixed_line_ranges":[],"operations":[{"operation_id":"6a1d484cd43055293471ccdc","tool_type":"agent","tool_id":"Edit","line_ranges":[{"Range":[1,14]}]}]}
+arkclaw/cli/messages.py
+  12406ab72cb1e7e4 1-14 gitai:{"mixed_line_ranges":[],"operations":[{"operation_id":"6a1d484cd43055293471ccdc","tool_type":"agent","tool_id":"Edit","line_ranges":[{"Range":[1,14]}]}]}
+arkclaw/__init__.py
+  12406ab72cb1e7e4 1-14 gitai:{"mixed_line_ranges":[],"operations":[{"operation_id":"6a1d484cd43055293471ccdc","tool_type":"agent","tool_id":"Edit","line_ranges":[{"Range":[1,14]}]}]}
+tests/test_unit_sdk.py
+  12406ab72cb1e7e4 1-14 gitai:{"mixed_line_ranges":[],"operations":[{"operation_id":"6a1d484cd43055293471ccdc","tool_type":"agent","tool_id":"Edit","line_ranges":[{"Range":[1,14]}]}]}
+arkclaw/client.py
+  12406ab72cb1e7e4 1-14 gitai:{"mixed_line_ranges":[],"operations":[{"operation_id":"6a1d484cd43055293471ccdc","tool_type":"agent","tool_id":"Edit","line_ranges":[{"Range":[1,14]}]}]}
+arkclaw/workflows.py
+  12406ab72cb1e7e4 1-14 gitai:{"mixed_line_ranges":[],"operations":[{"operation_id":"6a1d484cd43055293471ccdc","tool_type":"agent","tool_id":"Edit","line_ranges":[{"Range":[1,14]}]}]}
+arkclaw/signer.py
+  12406ab72cb1e7e4 1-14 gitai:{"mixed_line_ranges":[],"operations":[{"operation_id":"6a1d484cd43055293471ccdc","tool_type":"agent","tool_id":"Edit","line_ranges":[{"Range":[1,14]}]}]}
+arkclaw/cli/spaces.py
+  12406ab72cb1e7e4 1-14 gitai:{"mixed_line_ranges":[],"operations":[{"operation_id":"6a1d484cd43055293471ccdc","tool_type":"agent","tool_id":"Edit","line_ranges":[{"Range":[1,14]}]}]}
+arkclaw/message.py
+  12406ab72cb1e7e4 1-14 gitai:{"mixed_line_ranges":[],"operations":[{"operation_id":"6a1d484cd43055293471ccdc","tool_type":"agent","tool_id":"Edit","line_ranges":[{"Range":[1,14]}]}]}
+arkclaw/cli/_common.py
+  12406ab72cb1e7e4 1-14 gitai:{"mixed_line_ranges":[],"operations":[{"operation_id":"6a1d484cd43055293471ccdc","tool_type":"agent","tool_id":"Edit","line_ranges":[{"Range":[1,14]}]}]}
+arkclaw/exceptions.py
+  12406ab72cb1e7e4 1-14 gitai:{"mixed_line_ranges":[],"operations":[{"operation_id":"6a1d484cd43055293471ccdc","tool_type":"agent","tool_id":"Edit","line_ranges":[{"Range":[1,14]}]}]}
+arkclaw/config.py
+  12406ab72cb1e7e4 1-14 gitai:{"mixed_line_ranges":[],"operations":[{"operation_id":"6a1d484cd43055293471ccdc","tool_type":"agent","tool_id":"Edit","line_ranges":[{"Range":[1,14]}]}]}
+arkclaw/cli/instances.py
+  12406ab72cb1e7e4 1-14 gitai:{"mixed_line_ranges":[],"operations":[{"operation_id":"6a1d484cd43055293471ccdc","tool_type":"agent","tool_id":"Edit","line_ranges":[{"Range":[1,14]}]}]}
+tests/test_cli.py
+  12406ab72cb1e7e4 1-14 gitai:{"mixed_line_ranges":[],"operations":[{"operation_id":"6a1d484cd43055293471ccdc","tool_type":"agent","tool_id":"Edit","line_ranges":[{"Range":[1,14]}]}]}
+tests/test_packaging.py
+  12406ab72cb1e7e4 1-14 gitai:{"mixed_line_ranges":[],"operations":[{"operation_id":"6a1d484cd43055293471ccdc","tool_type":"agent","tool_id":"Edit","line_ranges":[{"Range":[1,14]}]}]}
+tests/test_message.py
+  12406ab72cb1e7e4 1-14 gitai:{"mixed_line_ranges":[],"operations":[{"operation_id":"6a1d484cd43055293471ccdc","tool_type":"agent","tool_id":"Edit","line_ranges":[{"Range":[1,14]}]}]}
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.3.4",
+  "base_commit_sha": "e78e6472e51d85ec3e1a1987541e30af95251b4f",
+  "prompts": {
+    "12406ab72cb1e7e4": {
+      "agent_id": {
+        "tool": "trae",
+        "id": "6a16adfcd43055293471cbc1",
+        "model": "openrouter-2o__dev"
+      },
+      "human_author": "yangsijia.614 <yangsijia.614@bytedance.com>",
+      "messages": [],
+      "total_additions": 360,
+      "total_deletions": 24,
+      "accepted_lines": 336,
+      "overriden_lines": 0
+    }
+  },
+  "attestation_metadata": {
+    "arkclaw/__init__.py": [
+      {
+        "hash": "12406ab72cb1e7e4",
+        "line_ranges": [
+          {
+            "Range": [
+              1,
+              14
+            ]
+          }
+        ],
+        "mixed_line_ranges": [],
+        "operations": [
+          {
+            "operation_id": "6a1d484cd43055293471ccdc",
+            "tool_type": "agent",
+            "tool_id": "Edit",
+            "line_ranges": [
+              {
+                "Range": [
+                  1,
+                  14
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "arkclaw/cli/__init__.py": [
+      {
+        "hash": "12406ab72cb1e7e4",
+        "line_ranges": [
+          {
+            "Range": [
+              1,
+              14
+            ]
+          }
+        ],
+        "mixed_line_ranges": [],
+        "operations": [
+          {
+            "operation_id": "6a1d484cd43055293471ccdc",
+            "tool_type": "agent",
+            "tool_id": "Edit",
+            "line_ranges": [
+              {
+                "Range": [
+                  1,
+                  14
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "arkclaw/cli/__main__.py": [
+      {
+        "hash": "12406ab72cb1e7e4",
+        "line_ranges": [
+          {
+            "Range": [
+              1,
+              14
+            ]
+          }
+        ],
+        "mixed_line_ranges": [],
+        "operations": [
+          {
+            "operation_id": "6a1d484cd43055293471ccdc",
+            "tool_type": "agent",
+            "tool_id": "Edit",
+            "line_ranges": [
+              {
+                "Range": [
+                  1,
+                  14
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "arkclaw/cli/_common.py": [
+      {
+        "hash": "12406ab72cb1e7e4",
+        "line_ranges": [
+          {
+            "Range": [
+              1,
+              14
+            ]
+          }
+        ],
+        "mixed_line_ranges": [],
+        "operations": [
+          {
+            "operation_id": "6a1d484cd43055293471ccdc",
+            "tool_type": "agent",
+            "tool_id": "Edit",
+            "line_ranges": [
+              {
+                "Range": [
+                  1,
+                  14
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "arkclaw/cli/command_jobs.py": [
+      {
+        "hash": "12406ab72cb1e7e4",
+        "line_ranges": [
+          {
+            "Range": [
+              1,
+              14
+            ]
+          }
+        ],
+        "mixed_line_ranges": [],
+        "operations": [
+          {
+            "operation_id": "6a1d484cd43055293471ccdc",
+            "tool_type": "agent",
+            "tool_id": "Edit",
+            "line_ranges": [
+              {
+                "Range": [
+                  1,
+                  14
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "arkclaw/cli/instances.py": [
+      {
+        "hash": "12406ab72cb1e7e4",
+        "line_ranges": [
+          {
+            "Range": [
+              1,
+              14
+            ]
+          }
+        ],
+        "mixed_line_ranges": [],
+        "operations": [
+          {
+            "operation_id": "6a1d484cd43055293471ccdc",
+            "tool_type": "agent",
+            "tool_id": "Edit",
+            "line_ranges": [
+              {
+                "Range": [
+                  1,
+                  14
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "arkclaw/cli/messages.py": [
+      {
+        "hash": "12406ab72cb1e7e4",
+        "line_ranges": [
+          {
+            "Range": [
+              1,
+              14
+            ]
+          }
+        ],
+        "mixed_line_ranges": [],
+        "operations": [
+          {
+            "operation_id": "6a1d484cd43055293471ccdc",
+            "tool_type": "agent",
+            "tool_id": "Edit",
+            "line_ranges": [
+              {
+                "Range": [
+                  1,
+                  14
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "arkclaw/cli/spaces.py": [
+      {
+        "hash": "12406ab72cb1e7e4",
+        "line_ranges": [
+          {
+            "Range": [
+              1,
+              14
+            ]
+          }
+        ],
+        "mixed_line_ranges": [],
+        "operations": [
+          {
+            "operation_id": "6a1d484cd43055293471ccdc",
+            "tool_type": "agent",
+            "tool_id": "Edit",
+            "line_ranges": [
+              {
+                "Range": [
+                  1,
+                  14
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "arkclaw/cli/users.py": [
+      {
+        "hash": "12406ab72cb1e7e4",
+        "line_ranges": [
+          {
+            "Range": [
+              1,
+              14
+            ]
+          }
+        ],
+        "mixed_line_ranges": [],
+        "operations": [
+          {
+            "operation_id": "6a1d484cd43055293471ccdc",
+            "tool_type": "agent",
+            "tool_id": "Edit",
+            "line_ranges": [
+              {
+                "Range": [
+                  1,
+                  14
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "arkclaw/client.py": [
+      {
+        "hash": "12406ab72cb1e7e4",
+        "line_ranges": [
+          {
+            "Range": [
+              1,
+              14
+            ]
+          }
+        ],
+        "mixed_line_ranges": [],
+        "operations": [
+          {
+            "operation_id": "6a1d484cd43055293471ccdc",
+            "tool_type": "agent",
+            "tool_id": "Edit",
+            "line_ranges": [
+              {
+                "Range": [
+                  1,
+                  14
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "arkclaw/config.py": [
+      {
+        "hash": "12406ab72cb1e7e4",
+        "line_ranges": [
+          {
+            "Range": [
+              1,
+              14
+            ]
+          }
+        ],
+        "mixed_line_ranges": [],
+        "operations": [
+          {
+            "operation_id": "6a1d484cd43055293471ccdc",
+            "tool_type": "agent",
+            "tool_id": "Edit",
+            "line_ranges": [
+              {
+                "Range": [
+                  1,
+                  14
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "arkclaw/exceptions.py": [
+      {
+        "hash": "12406ab72cb1e7e4",
+        "line_ranges": [
+          {
+            "Range": [
+              1,
+              14
+            ]
+          }
+        ],
+        "mixed_line_ranges": [],
+        "operations": [
+          {
+            "operation_id": "6a1d484cd43055293471ccdc",
+            "tool_type": "agent",
+            "tool_id": "Edit",
+            "line_ranges": [
+              {
+                "Range": [
+                  1,
+                  14
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "arkclaw/message.py": [
+      {
+        "hash": "12406ab72cb1e7e4",
+        "line_ranges": [
+          {
+            "Range": [
+              1,
+              14
+            ]
+          }
+        ],
+        "mixed_line_ranges": [],
+        "operations": [
+          {
+            "operation_id": "6a1d484cd43055293471ccdc",
+            "tool_type": "agent",
+            "tool_id": "Edit",
+            "line_ranges": [
+              {
+                "Range": [
+                  1,
+                  14
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "arkclaw/signer.py": [
+      {
+        "hash": "12406ab72cb1e7e4",
+        "line_ranges": [
+          {
+            "Range": [
+              1,
+              14
+            ]
+          }
+        ],
+        "mixed_line_ranges": [],
+        "operations": [
+          {
+            "operation_id": "6a1d484cd43055293471ccdc",
+            "tool_type": "agent",
+            "tool_id": "Edit",
+            "line_ranges": [
+              {
+                "Range": [
+                  1,
+                  14
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "arkclaw/spec.py": [
+      {
+        "hash": "12406ab72cb1e7e4",
+        "line_ranges": [
+          {
+            "Range": [
+              1,
+              14
+            ]
+          }
+        ],
+        "mixed_line_ranges": [],
+        "operations": [
+          {
+            "operation_id": "6a1d484cd43055293471ccdc",
+            "tool_type": "agent",
+            "tool_id": "Edit",
+            "line_ranges": [
+              {
+                "Range": [
+                  1,
+                  14
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "arkclaw/transport.py": [
+      {
+        "hash": "12406ab72cb1e7e4",
+        "line_ranges": [
+          {
+            "Range": [
+              1,
+              14
+            ]
+          }
+        ],
+        "mixed_line_ranges": [],
+        "operations": [
+          {
+            "operation_id": "6a1d484cd43055293471ccdc",
+            "tool_type": "agent",
+            "tool_id": "Edit",
+            "line_ranges": [
+              {
+                "Range": [
+                  1,
+                  14
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "arkclaw/workflows.py": [
+      {
+        "hash": "12406ab72cb1e7e4",
+        "line_ranges": [
+          {
+            "Range": [
+              1,
+              14
+            ]
+          }
+        ],
+        "mixed_line_ranges": [],
+        "operations": [
+          {
+            "operation_id": "6a1d484cd43055293471ccdc",
+            "tool_type": "agent",
+            "tool_id": "Edit",
+            "line_ranges": [
+              {
+                "Range": [
+                  1,
+                  14
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "examples/quickstart.py": [
+      {
+        "hash": "12406ab72cb1e7e4",
+        "line_ranges": [
+          {
+            "Range": [
+              1,
+              14
+            ]
+          }
+        ],
+        "mixed_line_ranges": [],
+        "operations": [
+          {
+            "operation_id": "6a1d484cd43055293471ccdc",
+            "tool_type": "agent",
+            "tool_id": "Edit",
+            "line_ranges": [
+              {
+                "Range": [
+                  1,
+                  14
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "examples/send_message.py": [
+      {
+        "hash": "12406ab72cb1e7e4",
+        "line_ranges": [
+          {
+            "Range": [
+              1,
+              14
+            ]
+          }
+        ],
+        "mixed_line_ranges": [],
+        "operations": [
+          {
+            "operation_id": "6a1d484cd43055293471ccdc",
+            "tool_type": "agent",
+            "tool_id": "Edit",
+            "line_ranges": [
+              {
+                "Range": [
+                  1,
+                  14
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "tests/test_cli.py": [
+      {
+        "hash": "12406ab72cb1e7e4",
+        "line_ranges": [
+          {
+            "Range": [
+              1,
+              14
+            ]
+          }
+        ],
+        "mixed_line_ranges": [],
+        "operations": [
+          {
+            "operation_id": "6a1d484cd43055293471ccdc",
+            "tool_type": "agent",
+            "tool_id": "Edit",
+            "line_ranges": [
+              {
+                "Range": [
+                  1,
+                  14
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "tests/test_integration_smoke.py": [
+      {
+        "hash": "12406ab72cb1e7e4",
+        "line_ranges": [
+          {
+            "Range": [
+              1,
+              14
+            ]
+          }
+        ],
+        "mixed_line_ranges": [],
+        "operations": [
+          {
+            "operation_id": "6a1d484cd43055293471ccdc",
+            "tool_type": "agent",
+            "tool_id": "Edit",
+            "line_ranges": [
+              {
+                "Range": [
+                  1,
+                  14
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "tests/test_message.py": [
+      {
+        "hash": "12406ab72cb1e7e4",
+        "line_ranges": [
+          {
+            "Range": [
+              1,
+              14
+            ]
+          }
+        ],
+        "mixed_line_ranges": [],
+        "operations": [
+          {
+            "operation_id": "6a1d484cd43055293471ccdc",
+            "tool_type": "agent",
+            "tool_id": "Edit",
+            "line_ranges": [
+              {
+                "Range": [
+                  1,
+                  14
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "tests/test_packaging.py": [
+      {
+        "hash": "12406ab72cb1e7e4",
+        "line_ranges": [
+          {
+            "Range": [
+              1,
+              14
+            ]
+          }
+        ],
+        "mixed_line_ranges": [],
+        "operations": [
+          {
+            "operation_id": "6a1d484cd43055293471ccdc",
+            "tool_type": "agent",
+            "tool_id": "Edit",
+            "line_ranges": [
+              {
+                "Range": [
+                  1,
+                  14
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "tests/test_unit_sdk.py": [
+      {
+        "hash": "12406ab72cb1e7e4",
+        "line_ranges": [
+          {
+            "Range": [
+              1,
+              14
+            ]
+          }
+        ],
+        "mixed_line_ranges": [],
+        "operations": [
+          {
+            "operation_id": "6a1d484cd43055293471ccdc",
+            "tool_type": "agent",
+            "tool_id": "Edit",
+            "line_ranges": [
+              {
+                "Range": [
+                  1,
+                  14
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "remote_transcripts": {
+    "12406ab72cb1e7e4": {
+      "tool": "trae",
+      "conversation_id": "6a16adfcd43055293471cbc1",
+      "session_id": "6a16adfcd43055293471cbc1",
+      "status": "remote_only",
+      "message": "Remote transcript resolution is not implemented yet for TRAE prompts."
+    }
+  }
+}
