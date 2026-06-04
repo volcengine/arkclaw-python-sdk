@@ -1,0 +1,148 @@
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.3.4",
+  "base_commit_sha": "2c215f5024f405b954de0ffc2d302f2fa9b84826",
+  "prompts": {
+    "00bf6a525f264fba": {
+      "agent_id": {
+        "tool": "trae-cue",
+        "id": "ai_tab-icr-150b8f47-2faa-487a-89cb-32f2f6ac8f83",
+        "model": "default"
+      },
+      "human_author": "yangsijia.614 <yangsijia.614@bytedance.com>",
+      "messages": [],
+      "total_additions": 1,
+      "total_deletions": 1,
+      "accepted_lines": 1,
+      "overriden_lines": 0
+    },
+    "21be165177120857": {
+      "agent_id": {
+        "tool": "trae-cue",
+        "id": "ai_tab-icr-1b69cc85-5dd5-46c7-ab0e-b6813b185a65",
+        "model": "default"
+      },
+      "human_author": "yangsijia.614 <yangsijia.614@bytedance.com>",
+      "messages": [],
+      "total_additions": 3,
+      "total_deletions": 1,
+      "accepted_lines": 3,
+      "overriden_lines": 0
+    },
+    "3a9602c6b6211478": {
+      "agent_id": {
+        "tool": "trae-cue",
+        "id": "ai_tab-icr-462a7d06-afc0-41bf-b0bd-bcfe2204dfdc",
+        "model": "default"
+      },
+      "human_author": "yangsijia.614 <yangsijia.614@bytedance.com>",
+      "messages": [],
+      "total_additions": 1,
+      "total_deletions": 1,
+      "accepted_lines": 0,
+      "overriden_lines": 0
+    },
+    "4c10169bfda1e2e0": {
+      "agent_id": {
+        "tool": "trae-cue",
+        "id": "ai_tab-icr-43f87c88-1607-488f-b755-e718539ab6c1",
+        "model": "default"
+      },
+      "human_author": "yangsijia.614 <yangsijia.614@bytedance.com>",
+      "messages": [],
+      "total_additions": 1,
+      "total_deletions": 1,
+      "accepted_lines": 1,
+      "overriden_lines": 0
+    },
+    "5ac96018593d6fc9": {
+      "agent_id": {
+        "tool": "trae",
+        "id": "6a2140f0d43055293471cd1f",
+        "model": "openrouter-2o__dev"
+      },
+      "human_author": "yangsijia.614 <yangsijia.614@bytedance.com>",
+      "messages": [],
+      "total_additions": 35,
+      "total_deletions": 1,
+      "accepted_lines": 25,
+      "overriden_lines": 10
+    },
+    "64e853d5745c8b5a": {
+      "agent_id": {
+        "tool": "trae-cue",
+        "id": "ai_tab-icr-a1a23661-6cd2-41bf-a09a-809cf77c6e6e",
+        "model": "default"
+      },
+      "human_author": "yangsijia.614 <yangsijia.614@bytedance.com>",
+      "messages": [],
+      "total_additions": 1,
+      "total_deletions": 1,
+      "accepted_lines": 0,
+      "overriden_lines": 0
+    },
+    "86cb385b3c25be6e": {
+      "agent_id": {
+        "tool": "trae-cue",
+        "id": "ai_tab-icr-e2838d4d-44a7-433d-84e2-c729bc0563fe",
+        "model": "default"
+      },
+      "human_author": "yangsijia.614 <yangsijia.614@bytedance.com>",
+      "messages": [],
+      "total_additions": 2,
+      "total_deletions": 1,
+      "accepted_lines": 1,
+      "overriden_lines": 1
+    },
+    "9d88c00946ef19ef": {
+      "agent_id": {
+        "tool": "trae-cue",
+        "id": "ai_tab-icr-b6788f1a-31ba-47d6-bc04-eed3287c1dfc",
+        "model": "default"
+      },
+      "human_author": "yangsijia.614 <yangsijia.614@bytedance.com>",
+      "messages": [],
+      "total_additions": 1,
+      "total_deletions": 1,
+      "accepted_lines": 0,
+      "overriden_lines": 0
+    },
+    "d39027ffe03c923d": {
+      "agent_id": {
+        "tool": "trae-cue",
+        "id": "ai_tab-icr-67080e25-4098-438d-8d0e-7f84a1d60c83",
+        "model": "default"
+      },
+      "human_author": "yangsijia.614 <yangsijia.614@bytedance.com>",
+      "messages": [],
+      "total_additions": 1,
+      "total_deletions": 1,
+      "accepted_lines": 0,
+      "overriden_lines": 1
+    },
+    "f22dabe12bfde485": {
+      "agent_id": {
+        "tool": "trae-cue",
+        "id": "ai_tab-icr-1f2d61a7-0422-463f-9218-f9ec1df88b8e",
+        "model": "default"
+      },
+      "human_author": "yangsijia.614 <yangsijia.614@bytedance.com>",
+      "messages": [],
+      "total_additions": 1,
+      "total_deletions": 1,
+      "accepted_lines": 0,
+      "overriden_lines": 1
+    }
+  },
+  "attestation_metadata": {},
+  "remote_transcripts": {
+    "5ac96018593d6fc9": {
+      "tool": "trae",
+      "conversation_id": "6a2140f0d43055293471cd1f",
+      "session_id": "6a2140f0d43055293471cd1f",
+      "status": "remote_only",
+      "message": "Remote transcript resolution is not implemented yet for TRAE prompts."
+    }
+  }
+}
