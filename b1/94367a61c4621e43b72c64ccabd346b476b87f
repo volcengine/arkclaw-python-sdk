@@ -1,0 +1,174 @@
+arkclaw/cli/instances.py
+  5ac96018593d6fc9 96-106,237-264 gitai:{"mixed_line_ranges":[],"operations":[{"operation_id":"6a2bc7f2d43055293471cf2b","tool_type":"agent","tool_id":"Edit","line_ranges":[{"Range":[96,106]},{"Range":[237,264]}]}]}
+README.md
+  5ac96018593d6fc9 226-234 gitai:{"mixed_line_ranges":[],"operations":[{"operation_id":"6a2bc7f2d43055293471cf2b","tool_type":"agent","tool_id":"Edit","line_ranges":[{"Range":[226,234]}]}]}
+tests/test_integration_smoke.py
+  5ac96018593d6fc9 476 gitai:{"mixed_line_ranges":[],"operations":[{"operation_id":"6a2bc7f2d43055293471cf2b","tool_type":"agent","tool_id":"Edit","line_ranges":[{"Single":476}]}]}
+tests/test_cli.py
+  5ac96018593d6fc9 131-157,340-393 gitai:{"mixed_line_ranges":[],"operations":[{"operation_id":"6a2bc7f2d43055293471cf2b","tool_type":"agent","tool_id":"Edit","line_ranges":[{"Range":[131,157]},{"Range":[340,393]}]}]}
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.3.4",
+  "base_commit_sha": "b194367a61c4621e43b72c64ccabd346b476b87f",
+  "prompts": {
+    "5ac96018593d6fc9": {
+      "agent_id": {
+        "tool": "trae",
+        "id": "6a2140f0d43055293471cd1f",
+        "model": "openrouter-2o__dev"
+      },
+      "human_author": "yangsijia.614 <yangsijia.614@bytedance.com>",
+      "messages": [],
+      "total_additions": 7,
+      "total_deletions": 2,
+      "accepted_lines": 138,
+      "overriden_lines": 0
+    }
+  },
+  "attestation_metadata": {
+    "README.md": [
+      {
+        "hash": "5ac96018593d6fc9",
+        "line_ranges": [
+          {
+            "Range": [
+              226,
+              234
+            ]
+          }
+        ],
+        "mixed_line_ranges": [],
+        "operations": [
+          {
+            "operation_id": "6a2bc7f2d43055293471cf2b",
+            "tool_type": "agent",
+            "tool_id": "Edit",
+            "line_ranges": [
+              {
+                "Range": [
+                  226,
+                  234
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "arkclaw/cli/instances.py": [
+      {
+        "hash": "5ac96018593d6fc9",
+        "line_ranges": [
+          {
+            "Range": [
+              96,
+              106
+            ]
+          },
+          {
+            "Range": [
+              237,
+              264
+            ]
+          }
+        ],
+        "mixed_line_ranges": [],
+        "operations": [
+          {
+            "operation_id": "6a2bc7f2d43055293471cf2b",
+            "tool_type": "agent",
+            "tool_id": "Edit",
+            "line_ranges": [
+              {
+                "Range": [
+                  96,
+                  106
+                ]
+              },
+              {
+                "Range": [
+                  237,
+                  264
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "tests/test_cli.py": [
+      {
+        "hash": "5ac96018593d6fc9",
+        "line_ranges": [
+          {
+            "Range": [
+              131,
+              157
+            ]
+          },
+          {
+            "Range": [
+              340,
+              393
+            ]
+          }
+        ],
+        "mixed_line_ranges": [],
+        "operations": [
+          {
+            "operation_id": "6a2bc7f2d43055293471cf2b",
+            "tool_type": "agent",
+            "tool_id": "Edit",
+            "line_ranges": [
+              {
+                "Range": [
+                  131,
+                  157
+                ]
+              },
+              {
+                "Range": [
+                  340,
+                  393
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "tests/test_integration_smoke.py": [
+      {
+        "hash": "5ac96018593d6fc9",
+        "line_ranges": [
+          {
+            "Single": 476
+          }
+        ],
+        "mixed_line_ranges": [],
+        "operations": [
+          {
+            "operation_id": "6a2bc7f2d43055293471cf2b",
+            "tool_type": "agent",
+            "tool_id": "Edit",
+            "line_ranges": [
+              {
+                "Single": 476
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "remote_transcripts": {
+    "5ac96018593d6fc9": {
+      "tool": "trae",
+      "conversation_id": "6a2140f0d43055293471cd1f",
+      "session_id": "6a2140f0d43055293471cd1f",
+      "status": "remote_only",
+      "message": "Remote transcript resolution is not implemented yet for TRAE prompts."
+    }
+  }
+}
