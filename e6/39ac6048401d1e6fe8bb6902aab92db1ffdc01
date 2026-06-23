@@ -1,0 +1,25 @@
+README.md
+  98ff55084ab5c86c 332-340
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.3.4",
+  "base_commit_sha": "e639ac6048401d1e6fe8bb6902aab92db1ffdc01",
+  "prompts": {
+    "98ff55084ab5c86c": {
+      "agent_id": {
+        "tool": "trae",
+        "id": "6a3941ef4eb4c48484a9fab4",
+        "model": "openrouter-2o__dev"
+      },
+      "human_author": "yangsijia.614 <yangsijia.614@bytedance.com>",
+      "messages": [],
+      "total_additions": 10,
+      "total_deletions": 1,
+      "accepted_lines": 9,
+      "overriden_lines": 0
+    }
+  },
+  "attestation_metadata": {},
+  "remote_transcripts": {}
+}
