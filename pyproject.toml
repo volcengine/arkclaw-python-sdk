@@ -1,0 +1,69 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "arkclaw-python-sdk"
+description = "Python SDK and CLI for ArkClaw OpenAPI 2026-05-01."
+readme = "README.md"
+requires-python = ">=3.9"
+license = "Apache-2.0"
+dynamic = ["version"]
+authors = [{ name = "ArkClaw SDK Authors" }]
+keywords = ["arkclaw", "volcengine", "sdk", "cli"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3 :: Only",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+]
+
+dependencies = [
+    "urllib3>=2.0.0",
+    "websocket-client>=1.8.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "build>=1.2.0",
+    "mypy>=1.11.0,<2.0.0",
+    "pip-audit>=2.7.0",
+    "ruff>=0.8.0",
+    "twine>=5.0.0",
+]
+
+[project.scripts]
+arkclaw = "arkclaw.cli:main"
+
+[project.urls]
+Homepage = "https://github.com/volcengine/arkclaw-python-sdk"
+Repository = "https://github.com/volcengine/arkclaw-python-sdk"
+Issues = "https://github.com/volcengine/arkclaw-python-sdk/issues"
+Changelog = "https://github.com/volcengine/arkclaw-python-sdk/blob/main/CHANGELOG.md"
+Documentation = "https://github.com/volcengine/arkclaw-python-sdk#readme"
+
+[tool.setuptools.packages.find]
+include = ["arkclaw*"]
+
+[tool.setuptools.package-data]
+arkclaw = ["py.typed"]
+
+[tool.setuptools.dynamic]
+version = { attr = "arkclaw.__version__" }
+
+[tool.ruff]
+target-version = "py39"
+line-length = 120
+
+[tool.ruff.lint]
+select = ["E4", "E7", "E9", "F"]
+
+[tool.mypy]
+python_version = "3.9"
+files = ["arkclaw"]
+warn_unused_configs = true

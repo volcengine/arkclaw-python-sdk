@@ -1,0 +1,33 @@
+# Changelog
+
+All notable changes to this project will be documented in this file.
+
+## [0.1.0] - 2026-06-23
+
+### Added
+
+- Initial open-source release of `arkclaw-python-sdk`.
+- Typed Python client for ArkClaw OpenAPI `2026-05-01` with AK/SK request
+  signing and environment-based credential configuration.
+- Resource clients for:
+  - Managing ClawSpaces and user model configuration.
+  - Creating, updating, and deleting users.
+  - Creating ClawInstances directly or from templates, querying and updating
+    instances, managing their lifecycle, and retrieving chat or terminal access
+    tokens.
+  - Creating, listing, inspecting, and stopping command jobs.
+- `arkclaw` command-line interface covering spaces, users, instances, command
+  jobs, and WebSocket message sessions.
+- WebSocket message-session helpers with connection reuse, streaming responses,
+  timeout handling, and reconnect support.
+- Workflow helpers for instance provisioning, status polling, chat access, and
+  command-job execution.
+- Configurable connection pooling, connect and read timeouts, retry backoff,
+  proxy support, TLS verification, custom CA certificates, debug logging, and
+  per-request runtime overrides.
+- Structured validation and API errors with action, status code, request ID,
+  service error code, and retryability information.
+- Type information through the bundled `py.typed` marker.
+- Quick-start examples, an end-to-end best-practice notebook, unit tests, and
+  opt-in live integration smoke tests.
+- Apache License 2.0 project licensing and a public security reporting policy.

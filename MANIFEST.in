@@ -1,0 +1,17 @@
+include README.md
+include requirements.txt
+include LICENSE
+include CHANGELOG.md
+include SECURITY.md
+include .env.example
+recursive-include arkclaw py.typed
+recursive-include examples *.py
+recursive-include notebooks *.ipynb
+recursive-exclude tests __pycache__ *.py[cod]
+exclude .DS_Store
+exclude api_reference.txt
+exclude openapi_guide.txt
+recursive-exclude artifacts *
+recursive-exclude batch_command *
+exclude ArkClaw*.pdf
+exclude 火山引擎ArkClaw*.pdf
