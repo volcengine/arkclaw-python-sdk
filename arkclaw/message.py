@@ -175,14 +175,14 @@ def _build_websocket_url(*, endpoint: str, chat_token: str, claw_instance_id: st
     return f"{base}{separator}{query}"
 
 
-def _build_connect_message(*, request_id: str | None = None) -> str:
+def _build_connect_message(*, request_id: str | None = None, protocol_version: int = 4) -> str:
     payload = {
         "type": "req",
         "id": request_id or str(uuid4()),
         "method": "connect",
         "params": {
-            "minProtocol": 3,
-            "maxProtocol": 3,
+            "minProtocol": protocol_version,
+            "maxProtocol": protocol_version,
             "client": {
                 "id": "openclaw-control-ui",
                 "version": "dev",
@@ -234,6 +234,7 @@ class ArkClawMessageSession:
         receive_timeout: float = 30.0,
         connect_retries: int = 2,
         session_key: str = "agent:main:main",
+        protocol_version: int = 4,
     ) -> None:
         if connect_retries < 0:
             raise ValidationError("connect_retries must be >= 0")
@@ -247,6 +248,9 @@ class ArkClawMessageSession:
         self.receive_timeout = receive_timeout
         self.connect_retries = connect_retries
         self.session_key = session_key
+        if protocol_version not in (3, 4):
+            raise ValidationError(f"protocol_version must be 3 or 4, got {protocol_version}")
+        self.protocol_version = protocol_version
 
         self._websocket_module: Any | None = None
         self._timeout_exc: type[BaseException] = TimeoutError
@@ -381,15 +385,27 @@ class ArkClawMessageSession:
         except Exception as exc:
             raise ValidationError(f"WebSocket chat connection failed: {type(exc).__name__}") from exc
         ws.settimeout(self.receive_timeout)
-        try:
-            ws.send(_build_connect_message())
-            self._wait_for_connect_ack(ws)
-        except Exception:
+        # Try configured protocol first, fall back to the other on mismatch
+        fallback_protocol = 3 if self.protocol_version == 4 else 4
+        protocols_to_try = [self.protocol_version, fallback_protocol]
+        last_error: Exception | None = None
+        for proto in protocols_to_try:
+            try:
+                ws.send(_build_connect_message(protocol_version=proto))
+                self._wait_for_connect_ack(ws)
+                last_error = None
+                break
+            except ValidationError as exc:
+                if 'PROTOCOL_MISMATCH' not in str(exc):
+                    raise
+                last_error = exc
+                continue
+        if last_error:
             try:
                 ws.close()
             except Exception:
                 pass
-            raise
+            raise last_error
         self._ws = ws
 
     def _refresh_chat_access(self) -> None:
