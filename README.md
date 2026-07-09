@@ -12,15 +12,13 @@ ArkClaw automation:
 
 ## Install
 
-> [!NOTE]
-> `arkclaw-python-sdk` has not been published to PyPI yet. The command below
-> will become available after the first package release.
+Install from PyPI:
 
 ```bash
 pip install arkclaw-python-sdk
 ```
 
-For now, install from a source checkout:
+Or install from a source checkout:
 
 ```bash
 pip install .
