@@ -18,7 +18,7 @@ import json
 import unittest
 from unittest.mock import MagicMock, patch
 
-from arkclaw import ArkClawClient
+from arkclaw import ArkClawClient, ValidationError
 from arkclaw.message import (
     ArkClawMessageSession,
     _build_chat_send_message,
@@ -65,6 +65,21 @@ class MessageHelpersTests(unittest.TestCase):
         payload = json.loads(_build_connect_message(request_id="connect-1"))
         self.assertEqual(payload["method"], "connect")
         self.assertEqual(payload["params"]["client"]["id"], "openclaw-control-ui")
+
+    def test_build_connect_message_defaults_to_v4(self) -> None:
+        payload = json.loads(_build_connect_message(request_id="connect-v3"))
+        self.assertEqual(payload["params"]["minProtocol"], 4)
+        self.assertEqual(payload["params"]["maxProtocol"], 4)
+
+    def test_build_connect_message_v4(self) -> None:
+        payload = json.loads(_build_connect_message(request_id="connect-v4", protocol_version=4))
+        self.assertEqual(payload["params"]["minProtocol"], 4)
+        self.assertEqual(payload["params"]["maxProtocol"], 4)
+
+    def test_build_connect_message_v3_explicit(self) -> None:
+        payload = json.loads(_build_connect_message(request_id="connect-v3-exp", protocol_version=3))
+        self.assertEqual(payload["params"]["minProtocol"], 3)
+        self.assertEqual(payload["params"]["maxProtocol"], 3)
 
     def test_render_stream_message_pretty_formats_assistant(self) -> None:
         data = json.dumps(
@@ -230,6 +245,157 @@ class MessageSessionTests(unittest.TestCase):
 
         self.assertEqual(result["receive_timeout"], False)
         self.assertEqual(mock_ws_mod.create_connection.call_count, 2)
+
+    def test_session_defaults_to_v4_protocol(self) -> None:
+        session = self.client.create_message_session(space_id="csi-xxx", instance_id="ci-xxx", wait=False)
+        self.assertEqual(session.protocol_version, 4)
+
+    def test_session_accepts_v3_protocol(self) -> None:
+        session = self.client.create_message_session(space_id="csi-xxx", instance_id="ci-xxx", wait=False, protocol_version=3)
+        self.assertEqual(session.protocol_version, 3)
+
+    def test_session_accepts_v4_protocol(self) -> None:
+        session = self.client.create_message_session(space_id="csi-xxx", instance_id="ci-xxx", wait=False, protocol_version=4)
+        self.assertEqual(session.protocol_version, 4)
+
+    def test_session_rejects_invalid_protocol(self) -> None:
+        with self.assertRaises(ValidationError):
+            self.client.create_message_session(space_id="csi-xxx", instance_id="ci-xxx", wait=False, protocol_version=2)
+
+    @patch("arkclaw.message._load_websocket_module")
+    def test_send_message_uses_v3_connect(self, mock_load_ws) -> None:
+        self.client.workflows.prepare_chat_access = MagicMock(
+            return_value={
+                "token": {
+                    "ChatToken": "secret",
+                    "Endpoint": "example.com/ws",
+                    "InstanceId": "ci-xxx",
+                }
+            }
+        )
+
+        sent_messages: list[str] = []
+
+        class FakeConnection:
+            def __init__(self) -> None:
+                self.responses = [
+                    json.dumps({"type": "event", "event": "connect.challenge"}),
+                    json.dumps({"type": "res", "ok": True}),
+                    json.dumps({"type": "event", "event": "chat", "payload": {"text": "reply"}}),
+                ]
+
+            def send(self, data: str) -> None:
+                sent_messages.append(data)
+
+            def recv(self) -> str:
+                return self.responses.pop(0)
+
+            def settimeout(self, timeout: float) -> None:
+                return None
+
+            def close(self) -> None:
+                return None
+
+        mock_ws_mod = MagicMock()
+        mock_ws_mod.create_connection.return_value = FakeConnection()
+        mock_load_ws.return_value = mock_ws_mod
+
+        session = self.client.create_message_session(space_id="csi-xxx", instance_id="ci-xxx", wait=False, protocol_version=3)
+        session.send_message("hello")
+
+        connect_msg = json.loads(sent_messages[0])
+        self.assertEqual(connect_msg["params"]["minProtocol"], 3)
+        self.assertEqual(connect_msg["params"]["maxProtocol"], 3)
+
+    @patch("arkclaw.message._load_websocket_module")
+    def test_send_message_uses_v4_connect(self, mock_load_ws) -> None:
+        self.client.workflows.prepare_chat_access = MagicMock(
+            return_value={
+                "token": {
+                    "ChatToken": "secret",
+                    "Endpoint": "example.com/ws",
+                    "InstanceId": "ci-xxx",
+                }
+            }
+        )
+
+        sent_messages: list[str] = []
+
+        class FakeConnection:
+            def __init__(self) -> None:
+                self.responses = [
+                    json.dumps({"type": "event", "event": "connect.challenge"}),
+                    json.dumps({"type": "res", "ok": True}),
+                    json.dumps({"type": "event", "event": "chat", "payload": {"text": "reply"}}),
+                ]
+
+            def send(self, data: str) -> None:
+                sent_messages.append(data)
+
+            def recv(self) -> str:
+                return self.responses.pop(0)
+
+            def settimeout(self, timeout: float) -> None:
+                return None
+
+            def close(self) -> None:
+                return None
+
+        mock_ws_mod = MagicMock()
+        mock_ws_mod.create_connection.return_value = FakeConnection()
+        mock_load_ws.return_value = mock_ws_mod
+
+        session = self.client.create_message_session(space_id="csi-xxx", instance_id="ci-xxx", wait=False, protocol_version=4)
+        session.send_message("hello")
+
+        connect_msg = json.loads(sent_messages[0])
+        self.assertEqual(connect_msg["params"]["minProtocol"], 4)
+        self.assertEqual(connect_msg["params"]["maxProtocol"], 4)
+
+    @patch("arkclaw.message._load_websocket_module")
+    def test_stream_message_uses_v4_connect(self, mock_load_ws) -> None:
+        self.client.workflows.prepare_chat_access = MagicMock(
+            return_value={
+                "token": {
+                    "ChatToken": "secret",
+                    "Endpoint": "example.com/ws",
+                    "InstanceId": "ci-xxx",
+                }
+            }
+        )
+
+        sent_messages: list[str] = []
+
+        class FakeConnection:
+            def __init__(self) -> None:
+                self.responses = [
+                    json.dumps({"type": "event", "event": "connect.challenge"}),
+                    json.dumps({"type": "res", "ok": True}),
+                    json.dumps({"type": "event", "event": "chat", "payload": {"state": "final", "text": "done"}}),
+                ]
+
+            def send(self, data: str) -> None:
+                sent_messages.append(data)
+
+            def recv(self) -> str:
+                return self.responses.pop(0)
+
+            def settimeout(self, timeout: float) -> None:
+                return None
+
+            def close(self) -> None:
+                return None
+
+        mock_ws_mod = MagicMock()
+        mock_ws_mod.create_connection.return_value = FakeConnection()
+        mock_load_ws.return_value = mock_ws_mod
+
+        session = self.client.create_message_session(space_id="csi-xxx", instance_id="ci-xxx", wait=False, protocol_version=4)
+        session.stream_message("hello", on_event=lambda _: None)
+
+        connect_msg = json.loads(sent_messages[0])
+        self.assertEqual(connect_msg["params"]["minProtocol"], 4)
+        self.assertEqual(connect_msg["params"]["maxProtocol"], 4)
 
     @patch("arkclaw.message._load_websocket_module")
     def test_stream_message_emits_relevant_frames(self, mock_load_ws) -> None:
