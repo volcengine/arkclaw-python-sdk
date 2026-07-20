@@ -253,6 +253,18 @@ class SpaceOperations(ResourceBase):
     def list(self, *, runtime_options: Optional[RuntimeOptions] = None, **kwargs: Any) -> dict[str, Any]:
         return self.invoke("ListClawSpaces", runtime_options=runtime_options, **kwargs)
 
+    def get(
+        self,
+        *,
+        space_id: str,
+        runtime_options: Optional[RuntimeOptions] = None,
+    ) -> dict[str, Any]:
+        return self.invoke(
+            "GetClawSpace",
+            space_id=space_id,
+            runtime_options=runtime_options,
+        )
+
     def update_users_model_config(
         self,
         *,

@@ -162,6 +162,14 @@ RAW_ACTION_SPECS: dict[str, RawActionSpec] = {
             ("SpaceName", False, "string"),
         ],
     },
+    "GetClawSpace": {
+        "group": "spaces",
+        "method": "GET",
+        "summary": "Get ArkClaw space detail.",
+        "params": [
+            ("SpaceId", True, "string"),
+        ],
+    },
     "CreateUsers": {
         "group": "users",
         "method": "POST",
