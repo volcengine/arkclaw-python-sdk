@@ -47,6 +47,48 @@ def register(subparsers: argparse._SubParsersAction) -> None:  # type: ignore[ty
     p.add_argument("--user-id", required=True)
     p.set_defaults(func=_delete)
 
+    p = sub.add_parser("list", help="List users in a space with optional filters")
+    p.add_argument("--space-id", required=True)
+    p.add_argument("--max-results", type=int, default=None)
+    p.add_argument("--next-token", default=None)
+    p.add_argument("--filter-department-uid", default=None)
+    p.add_argument(
+        "--filter-department-uid-recursive",
+        dest="filter_department_uid_recursive",
+        action="store_true",
+        default=None,
+    )
+    p.add_argument("--filter-email", default=None)
+    p.add_argument(
+        "--filter-email-phone-name-is-null-or-empty",
+        dest="filter_email_phone_name_is_null_or_empty",
+        action="store_true",
+        default=None,
+    )
+    p.add_argument("--filter-group-uid", default=None)
+    p.add_argument("--filter-name", default=None)
+    p.add_argument(
+        "--filter-not-in-any-department",
+        dest="filter_not_in_any_department",
+        action="store_true",
+        default=None,
+    )
+    p.add_argument(
+        "--filter-not-in-any-group",
+        dest="filter_not_in_any_group",
+        action="store_true",
+        default=None,
+    )
+    p.add_argument("--filter-phone-number", default=None)
+    p.add_argument(
+        "--filter-user-id",
+        dest="filter_user_ids",
+        action="append",
+        default=None,
+        help="User ID filter; may be given multiple times",
+    )
+    p.set_defaults(func=_list)
+
 
 def _add_user_fields(parser: argparse.ArgumentParser) -> None:
     parser.add_argument("--email", default=None)
@@ -89,4 +131,29 @@ def _update(args: argparse.Namespace) -> None:
 def _delete(args: argparse.Namespace) -> None:
     client = build_client(args)
     emit(client.users.delete(space_id=args.space_id, user_id=args.user_id))
+
+
+def _list(args: argparse.Namespace) -> None:
+    client = build_client(args)
+    filter_kwargs: dict[str, Any] = {
+        "department_uid": args.filter_department_uid,
+        "department_uid_recursive": args.filter_department_uid_recursive,
+        "email": args.filter_email,
+        "email_phone_name_is_null_or_empty": args.filter_email_phone_name_is_null_or_empty,
+        "group_uid": args.filter_group_uid,
+        "name": args.filter_name,
+        "not_in_any_department": args.filter_not_in_any_department,
+        "not_in_any_group": args.filter_not_in_any_group,
+        "phone_number": args.filter_phone_number,
+        "user_ids": args.filter_user_ids,
+    }
+    filter_payload = {k: v for k, v in filter_kwargs.items() if v is not None}
+    emit(
+        client.users.list(
+            space_id=args.space_id,
+            filter=filter_payload or None,
+            max_results=args.max_results,
+            next_token=args.next_token,
+        )
+    )
 

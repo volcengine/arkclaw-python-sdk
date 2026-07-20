@@ -22,8 +22,15 @@ from typing import TypedDict
 DEFAULT_VERSION = "2026-05-01"
 
 
+_LIST_MARKER_RE = re.compile(r"\.[Nn](?=\.|$)")
+
+
+def _strip_list_markers(name: str) -> str:
+    return _LIST_MARKER_RE.sub("", name)
+
+
 def _to_snake(name: str) -> str:
-    cleaned = name.replace(".N", "")
+    cleaned = _strip_list_markers(name)
     cleaned = cleaned.replace(".", "_")
     cleaned = re.sub(r"(?<!^)(?=[A-Z])", "_", cleaned)
     cleaned = cleaned.replace("__", "_")
@@ -38,11 +45,11 @@ class ParameterSpec:
 
     @property
     def is_list(self) -> bool:
-        return ".N" in self.raw_name
+        return bool(_LIST_MARKER_RE.search(self.raw_name))
 
     @property
     def body_name(self) -> str:
-        return self.raw_name.replace(".N", "")
+        return _strip_list_markers(self.raw_name)
 
     @property
     def path(self) -> tuple[str, ...]:
@@ -218,6 +225,26 @@ RAW_ACTION_SPECS: dict[str, RawActionSpec] = {
             ("PreferredUsername", False, "string"),
             ("SpaceId", True, "string"),
             ("UserId", True, "string"),
+        ],
+    },
+    "ListUsers": {
+        "group": "users",
+        "method": "GET",
+        "summary": "List users in an ArkClaw space with optional filters.",
+        "params": [
+            ("Filter.DepartmentUid", False, "string"),
+            ("Filter.DepartmentUidRecursive", False, "boolean"),
+            ("Filter.Email", False, "string"),
+            ("Filter.EmailPhoneNameIsNullOrEmpty", False, "boolean"),
+            ("Filter.GroupUid", False, "string"),
+            ("Filter.Name", False, "string"),
+            ("Filter.NotInAnyDepartment", False, "boolean"),
+            ("Filter.NotInAnyGroup", False, "boolean"),
+            ("Filter.PhoneNumber", False, "string"),
+            ("Filter.UserIds.N", False, "string[]"),
+            ("MaxResults", False, "integer"),
+            ("NextToken", False, "string"),
+            ("SpaceId", True, "string"),
         ],
     },
     "UpdateUsersModelConfig": {

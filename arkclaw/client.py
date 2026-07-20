@@ -29,7 +29,14 @@ import urllib3
 from .config import RetryConfig, RuntimeOptions, TimeoutConfig, TransportConfig
 from .exceptions import ApiError, ValidationError
 from .signer import sign_request
-from .spec import ACTION_SPECS, DEFAULT_VERSION, GROUP_TO_ACTIONS, ActionSpec, ParameterSpec
+from .spec import (
+    ACTION_SPECS,
+    DEFAULT_VERSION,
+    GROUP_TO_ACTIONS,
+    ActionSpec,
+    ParameterSpec,
+    _strip_list_markers,
+)
 from .transport import HttpTransport, Urllib3Transport
 
 if TYPE_CHECKING:
@@ -72,12 +79,14 @@ def _flatten_input(mapping: dict[str, Any], prefix: tuple[str, ...] = ()) -> lis
 
 def _candidate_aliases(name: str) -> list[str]:
     lowered = name.lower()
-    collapsed = lowered.replace(".n", "").replace(".", "_")
+    stripped = _strip_list_markers(name)
+    stripped_lower = _strip_list_markers(lowered)
+    collapsed = stripped_lower.replace(".", "_")
     return [
         name,
         lowered,
-        name.replace(".N", ""),
-        lowered.replace(".n", ""),
+        stripped,
+        stripped_lower,
         collapsed,
     ]
 
@@ -133,6 +142,29 @@ def _pascalize_tag_filter(tag_filter: dict[str, Any]) -> dict[str, Any]:
         "Key": tag_filter.get("key", tag_filter.get("Key")),
         "Values": tag_filter.get("values", tag_filter.get("Values")),
     }
+
+
+_USER_FILTER_KEY_MAP = {
+    "department_uid": "DepartmentUid",
+    "department_uid_recursive": "DepartmentUidRecursive",
+    "email": "Email",
+    "email_phone_name_is_null_or_empty": "EmailPhoneNameIsNullOrEmpty",
+    "group_uid": "GroupUid",
+    "name": "Name",
+    "not_in_any_department": "NotInAnyDepartment",
+    "not_in_any_group": "NotInAnyGroup",
+    "phone_number": "PhoneNumber",
+    "user_ids": "UserIds",
+}
+
+
+def _pascalize_user_filter(user_filter: dict[str, Any]) -> dict[str, Any]:
+    result: dict[str, Any] = {}
+    for key, value in user_filter.items():
+        if value is None:
+            continue
+        result[_USER_FILTER_KEY_MAP.get(key, key)] = value
+    return result
 
 
 def _normalize_special_payload_value(raw_key: str, value: Any) -> Any:
@@ -359,6 +391,25 @@ class UserOperations(ResourceBase):
             user_id=user_id,
             runtime_options=runtime_options,
         )
+
+    def list(
+        self,
+        *,
+        space_id: str,
+        filter: Optional[dict[str, Any]] = None,
+        max_results: Optional[int] = None,
+        next_token: Optional[str] = None,
+        runtime_options: Optional[RuntimeOptions] = None,
+    ) -> dict[str, Any]:
+        payload = _compact_dict(
+            {
+                "space_id": space_id,
+                "Filter": _pascalize_user_filter(filter) if filter else None,
+                "max_results": max_results,
+                "next_token": next_token,
+            }
+        )
+        return self.invoke("ListUsers", payload=payload, runtime_options=runtime_options)
 
 class InstanceOperations(ResourceBase):
     actions = GROUP_TO_ACTIONS["instances"]

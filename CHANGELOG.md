@@ -2,6 +2,24 @@
 
 All notable changes to this project will be documented in this file.
 
+## [Unreleased]
+
+### Added
+
+- `GetClawSpace`: `client.spaces.get` and `arkclaw space get` for retrieving
+  ArkClaw space detail (endpoints, auth type, status, APM ID).
+- `ListUsersModelConfig`: `client.spaces.list_users_model_config` and
+  `arkclaw space list-users-model-config` for paginated user model
+  configuration lookup with optional `UserIds` filter.
+- `ListUsers`: `client.users.list` and `arkclaw user list` for listing users
+  in a space with department, group, email, phone, name, and user-ID filters.
+
+### Fixed
+
+- Parameter spec `.N` list-marker stripping now uses a positional regex so
+  legitimate field names such as `Filter.Name` are no longer mangled into
+  `Filterame`.
+
 ## [0.1.0] - 2026-06-23
 
 ### Added
