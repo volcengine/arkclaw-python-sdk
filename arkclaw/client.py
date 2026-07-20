@@ -282,6 +282,25 @@ class SpaceOperations(ResourceBase):
         )
         return self.invoke("UpdateUsersModelConfig", payload=payload, runtime_options=runtime_options)
 
+    def list_users_model_config(
+        self,
+        *,
+        space_id: str,
+        user_ids: Optional[List[str]] = None,
+        max_results: Optional[int] = None,
+        next_token: Optional[str] = None,
+        runtime_options: Optional[RuntimeOptions] = None,
+    ) -> dict[str, Any]:
+        payload = _compact_dict(
+            {
+                "space_id": space_id,
+                "user_ids": user_ids,
+                "max_results": max_results,
+                "next_token": next_token,
+            }
+        )
+        return self.invoke("ListUsersModelConfig", payload=payload, runtime_options=runtime_options)
+
 
 class UserOperations(ResourceBase):
     actions = GROUP_TO_ACTIONS["users"]

@@ -233,6 +233,17 @@ RAW_ACTION_SPECS: dict[str, RawActionSpec] = {
             ("ModelConfig", True, "object"),
         ],
     },
+    "ListUsersModelConfig": {
+        "group": "spaces",
+        "method": "GET",
+        "summary": "List user model configurations in an ArkClaw space.",
+        "params": [
+            ("MaxResults", False, "integer"),
+            ("NextToken", False, "string"),
+            ("SpaceId", True, "string"),
+            ("UserIds.N", False, "string[]"),
+        ],
+    },
     "CreateClawInstance": {
         "group": "instances",
         "method": "POST",
