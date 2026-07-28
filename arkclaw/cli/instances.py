@@ -21,6 +21,9 @@ from typing import Any
 from ._common import build_client, emit, info
 
 
+_CLI_USER_ID_UNSET = object()
+
+
 def register(subparsers: argparse._SubParsersAction) -> None:  # type: ignore[type-arg]
     group = subparsers.add_parser("instance", help="ClawInstance management")
     sub = group.add_subparsers(dest="instance_action")
@@ -28,12 +31,15 @@ def register(subparsers: argparse._SubParsersAction) -> None:  # type: ignore[ty
 
     p = sub.add_parser("create", help="Create a ClawInstance")
     p.add_argument("--space-id", required=True)
-    p.add_argument("--user-id", required=True)
+    p.add_argument("--user-id", default=None)
     p.add_argument("--instance-name", required=True)
     p.add_argument("--seat-type", required=True, choices=["Starter", "Standard", "Premium", "Ultimate"])
     p.add_argument("--description", default=None)
     p.add_argument("--model-api-key", default=None)
     p.add_argument("--template-id", default=None)
+    p.add_argument("--enable-headless", choices=["true", "false"], default=None)
+    p.add_argument("--client-token", default=None)
+    p.add_argument("--dry-run", choices=["true", "false"], default=None)
     p.add_argument("--wait", action="store_true", default=False)
     p.add_argument("--wait-timeout", type=float, default=600)
     p.add_argument("--interval", type=float, default=5)
@@ -101,6 +107,11 @@ def register(subparsers: argparse._SubParsersAction) -> None:  # type: ignore[ty
     p.add_argument("--space-id", required=True)
     p.add_argument("--instance-id", required=True)
     p.add_argument("--instance-name", default=None)
+    p.add_argument(
+        "--user-id",
+        default=_CLI_USER_ID_UNSET,
+        help="Reassign the instance to this user ID; pass an empty string to unbind. Omit to leave the binding unchanged.",
+    )
     p.add_argument("--client-token", default=None)
     p.add_argument("--dry-run", choices=["true", "false"], default=None)
     p.set_defaults(func=_update)
@@ -129,6 +140,8 @@ def register(subparsers: argparse._SubParsersAction) -> None:  # type: ignore[ty
 
 def _create(args: argparse.Namespace) -> None:
     client = build_client(args)
+    enable_headless = None if args.enable_headless is None else args.enable_headless == "true"
+    dry_run = None if args.dry_run is None else args.dry_run == "true"
     if args.wait:
         info(f"Creating {args.instance_name} and waiting for Running...")
         result = client.workflows.provision_instance(
@@ -151,6 +164,9 @@ def _create(args: argparse.Namespace) -> None:
             description=args.description,
             model_api_key=args.model_api_key,
             template_id=args.template_id,
+            enable_headless=enable_headless,
+            client_token=args.client_token,
+            dry_run=dry_run,
         )
     emit(result)
 
@@ -258,15 +274,16 @@ def _reset(args: argparse.Namespace) -> None:
 def _update(args: argparse.Namespace) -> None:
     client = build_client(args)
     dry_run = None if args.dry_run is None else args.dry_run == "true"
-    emit(
-        client.instances.update(
-            space_id=args.space_id,
-            instance_id=args.instance_id,
-            instance_name=None if args.instance_name in (None, "") else args.instance_name,
-            client_token=args.client_token,
-            dry_run=dry_run,
-        )
+    update_kwargs: dict[str, Any] = dict(
+        space_id=args.space_id,
+        instance_id=args.instance_id,
+        instance_name=None if args.instance_name in (None, "") else args.instance_name,
+        client_token=args.client_token,
+        dry_run=dry_run,
     )
+    if args.user_id is not _CLI_USER_ID_UNSET:
+        update_kwargs["user_id"] = args.user_id
+    emit(client.instances.update(**update_kwargs))
 
 
 def _delete(args: argparse.Namespace) -> None:

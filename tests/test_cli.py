@@ -329,6 +329,9 @@ class CLIDispatchTests(unittest.TestCase):
             description=None,
             model_api_key=None,
             template_id="ctpl-test",
+            enable_headless=None,
+            client_token=None,
+            dry_run=None,
         )
 
     @patch("arkclaw.cli.instances.build_client")

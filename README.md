@@ -145,6 +145,12 @@ client.instances.update(
     instance_name="demo-claw-renamed",
 )
 
+client.instances.update(
+    space_id="csi-xxx",
+    instance_id=instance["InstanceId"],
+    user_id="user-yyy",  # pass "" to unbind the current owner
+)
+
 terminal = client.instances.get_terminal_token(
     space_id="csi-xxx",
     instance_id=instance["InstanceId"],
@@ -295,6 +301,11 @@ arkclaw instance update \
   --space-id csi-xxx \
   --instance-id ci-xxx \
   --instance-name demo-claw-renamed
+
+arkclaw instance update \
+  --space-id csi-xxx \
+  --instance-id ci-xxx \
+  --user-id user-yyy   # pass "" to unbind the current owner
 
 arkclaw instance terminal-token \
   --space-id csi-xxx \

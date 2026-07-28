@@ -13,6 +13,20 @@ All notable changes to this project will be documented in this file.
   configuration lookup with optional `UserIds` filter.
 - `ListUsers`: `client.users.list` and `arkclaw user list` for listing users
   in a space with department, group, email, phone, name, and user-ID filters.
+- `CreateClawInstance`: new optional parameters `EnableHeadless`,
+  `ClientToken`, `DryRun` on `client.instances.create` and
+  `arkclaw instance create`.
+- `UpdateClawInstance`: reassign or unbind the owning user via
+  `client.instances.update(user_id=...)` / `arkclaw instance update --user-id`,
+  which populates `Patch.UserId.Value` and `FieldMask.Paths=[Patch.UserId]`
+  under the hood. Omitting `user_id` leaves the binding untouched; passing an
+  empty string or `None` unbinds the current user.
+
+### Changed
+
+- `CreateClawInstance`: `UserId` is now optional (was required).
+- `CreateUsers`: spec explicitly declares `Users` as a required `object[]`;
+  user element fields remain the same.
 
 ### Fixed
 

@@ -45,6 +45,8 @@ if TYPE_CHECKING:
 
 LOGGER = logging.getLogger("arkclaw")
 
+_UNSET: Any = object()
+
 
 def _set_nested(target: dict[str, Any], path: tuple[str, ...], value: Any) -> None:
     current = target
@@ -418,10 +420,13 @@ class InstanceOperations(ResourceBase):
         self,
         *,
         space_id: str,
-        user_id: str,
         instance_name: str,
         seat_type: str,
+        user_id: Optional[str] = None,
         template_id: Optional[str] = None,
+        enable_headless: Optional[bool] = None,
+        client_token: Optional[str] = None,
+        dry_run: Optional[bool] = None,
         runtime_options: Optional[RuntimeOptions] = None,
         **kwargs: Any,
     ) -> dict[str, Any]:
@@ -432,6 +437,9 @@ class InstanceOperations(ResourceBase):
             instance_name=instance_name,
             seat_type=seat_type,
             template_id=template_id,
+            enable_headless=enable_headless,
+            client_token=client_token,
+            dry_run=dry_run,
             runtime_options=runtime_options,
             **kwargs,
         )
@@ -575,11 +583,12 @@ class InstanceOperations(ResourceBase):
         space_id: str,
         instance_id: str,
         instance_name: Optional[str] = None,
+        user_id: Any = _UNSET,
         client_token: Optional[str] = None,
         dry_run: Optional[bool] = None,
         runtime_options: Optional[RuntimeOptions] = None,
     ) -> dict[str, Any]:
-        payload = _compact_dict(
+        payload: dict[str, Any] = _compact_dict(
             {
                 "space_id": space_id,
                 "instance_id": instance_id,
@@ -588,6 +597,13 @@ class InstanceOperations(ResourceBase):
                 "dry_run": dry_run,
             }
         )
+        if user_id is not _UNSET:
+            payload["Patch"] = {"UserId": "" if user_id is None else user_id}
+            existing_paths = payload.get("FieldMask", {}).get("Paths", [])
+            paths = list(existing_paths)
+            if "Patch.UserId" not in paths:
+                paths.append("Patch.UserId")
+            payload["FieldMask"] = {"Paths": paths}
         return self.invoke("UpdateClawInstance", payload=payload, runtime_options=runtime_options)
 
     def delete(
