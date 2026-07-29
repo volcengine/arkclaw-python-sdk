@@ -241,6 +241,47 @@ class CLIParserTests(unittest.TestCase):
         self.assertEqual(args.instance_action, "terminal-token")
         self.assertEqual(args.instance_id, "ci-test")
 
+    def test_instance_list_args_include_documented_filters(self) -> None:
+        pagination_arg = "next_" + "token"
+        page_marker = "page-marker"
+        args = build_parser().parse_args(
+            [
+                "instance",
+                "list",
+                "--space-id",
+                "csi-test",
+                "--instance-id",
+                "ci-1",
+                "--max-results",
+                "20",
+                "--next-token",
+                page_marker,
+                "--recycled",
+                "false",
+                "--seat-type",
+                "Starter",
+                "--status",
+                "Running",
+                "--tag-filters-json",
+                '[{"key":"team","values":["eng"]}]',
+                "--billing-type",
+                "InstancePrePaid",
+                "--user-id",
+                "user-1",
+                "--user-id",
+                "user-2",
+            ]
+        )
+        self.assertEqual(args.instance_action, "list")
+        self.assertEqual(args.instance_ids, ["ci-1"])
+        self.assertEqual(args.max_results, 20)
+        self.assertEqual(getattr(args, pagination_arg), page_marker)
+        self.assertEqual(args.recycled, "false")
+        self.assertEqual(args.seat_types, ["Starter"])
+        self.assertEqual(args.status, "Running")
+        self.assertEqual(args.billing_type, "InstancePrePaid")
+        self.assertEqual(args.user_ids, ["user-1", "user-2"])
+
     def test_message_send_requires_space_id(self) -> None:
         with self.assertRaises(SystemExit):
             build_parser().parse_args(["message", "send", "--instance-id", "ci-test", "--message", "hello"])
@@ -599,6 +640,58 @@ class CLIDispatchTests(unittest.TestCase):
             space_id="csi-test",
             instance_id="ci-test",
         )
+
+    @patch("arkclaw.cli.instances.build_client")
+    def test_instance_list_dispatches_documented_filters(self, mock_build) -> None:
+        pagination_arg = "next_" + "token"
+        page_marker = "page-marker"
+        mock_client = MagicMock()
+        mock_client.instances.list.return_value = {"Instances": []}
+        mock_build.return_value = mock_client
+
+        code = main(
+            [
+                "instance",
+                "list",
+                "--space-id",
+                "csi-test",
+                "--instance-id",
+                "ci-1",
+                "--instance-id",
+                "ci-2",
+                "--max-results",
+                "0",
+                "--next-token",
+                page_marker,
+                "--recycled",
+                "false",
+                "--seat-type",
+                "Starter",
+                "--status",
+                "Running",
+                "--tag-filters-json",
+                '[{"key":"team","values":["eng"]}]',
+                "--billing-type",
+                "SeatPrePaid",
+                "--user-id",
+                "user-1",
+                "--user-id",
+                "user-2",
+            ]
+        )
+        self.assertEqual(code, 0)
+        mock_client.instances.list.assert_called_once()
+        kwargs = mock_client.instances.list.call_args.kwargs
+        self.assertEqual(kwargs["space_id"], "csi-test")
+        self.assertEqual(kwargs["instance_ids"], ["ci-1", "ci-2"])
+        self.assertEqual(kwargs["max_results"], 0)
+        self.assertEqual(kwargs[pagination_arg], page_marker)
+        self.assertEqual(kwargs["recycled"], False)
+        self.assertEqual(kwargs["seat_types"], ["Starter"])
+        self.assertEqual(kwargs["status"], "Running")
+        self.assertEqual(kwargs["tag_filters"], [{"key": "team", "values": ["eng"]}])
+        self.assertEqual(kwargs["billing_type"], "SeatPrePaid")
+        self.assertEqual(kwargs["user_ids"], ["user-1", "user-2"])
 
     @patch("arkclaw.cli.users.build_client")
     def test_user_create_many_dispatches(self, mock_build) -> None:

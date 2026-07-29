@@ -516,14 +516,30 @@ class InstanceOperations(ResourceBase):
         self,
         *,
         space_id: str,
+        instance_ids: Optional[List[str]] = None,
+        max_results: Optional[int] = None,
+        next_token: Optional[str] = None,
+        recycled: Optional[bool] = None,
+        seat_types: Optional[List[str]] = None,
+        status: Optional[str] = None,
         tag_filters: Optional[list[dict[str, Any]]] = None,
+        billing_type: Optional[str] = None,
+        user_ids: Optional[List[str]] = None,
         runtime_options: Optional[RuntimeOptions] = None,
         **kwargs: Any,
     ) -> dict[str, Any]:
         payload = _compact_dict(
             {
                 "space_id": space_id,
+                "instance_ids": instance_ids,
+                "max_results": max_results,
+                "next_token": next_token,
+                "recycled": recycled,
+                "seat_types": seat_types,
+                "status": status,
                 "TagFilters": [_pascalize_tag_filter(item) for item in tag_filters] if tag_filters else None,
+                "billing_type": billing_type,
+                "user_ids": user_ids,
                 **kwargs,
             }
         )

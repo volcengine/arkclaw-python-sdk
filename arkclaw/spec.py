@@ -344,6 +344,8 @@ RAW_ACTION_SPECS: dict[str, RawActionSpec] = {
             ("Status", False, "string"),
             ("TagFilters.N.Key", False, "string[]"),
             ("TagFilters.N.Values.N", False, "string[]"),
+            ("BillingType", False, "string"),
+            ("UserIds.N", False, "string[]"),
         ],
     },
     "StartClawInstance": {

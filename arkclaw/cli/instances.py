@@ -82,6 +82,8 @@ def register(subparsers: argparse._SubParsersAction) -> None:  # type: ignore[ty
     p.add_argument("--seat-type", action="append", dest="seat_types", default=None)
     p.add_argument("--status", default=None)
     p.add_argument("--tag-filters-json", default=None, help="JSON array like [{\"key\":\"k1\",\"values\":[\"v1\"]}]")
+    p.add_argument("--billing-type", choices=["SeatPrePaid", "InstancePrePaid"], default=None)
+    p.add_argument("--user-id", action="append", dest="user_ids", default=None)
     p.set_defaults(func=_list)
 
     p = sub.add_parser("start", help="Start instance")
@@ -245,6 +247,8 @@ def _list(args: argparse.Namespace) -> None:
             seat_types=args.seat_types,
             status=args.status,
             tag_filters=tag_filters,
+            billing_type=args.billing_type,
+            user_ids=args.user_ids,
         )
     )
 

@@ -193,6 +193,12 @@ class ArkClawSmokeTestCase(unittest.TestCase):
     def _require_default_instance(self, *, purpose: str) -> str:
         if not self.instance_id:
             self.skipTest(f"Set ARKCLAW_INSTANCE_ID to run the {purpose} live smoke test.")
+        try:
+            detail = self.client.instances.get(space_id=self.space_id, instance_id=self.instance_id)
+        except ApiError as exc:
+            self.skipTest(f"Configured ARKCLAW_INSTANCE_ID is not usable for the {purpose} live smoke test: {exc.code}.")
+        if not self._contains_instance_id(detail, self.instance_id):
+            self.skipTest(f"Configured ARKCLAW_INSTANCE_ID is not usable for the {purpose} live smoke test.")
         return self.instance_id
 
     def _require_named_env(self, name: str, *, purpose: str) -> str:
@@ -414,17 +420,43 @@ class ArkClawSmokeTestCase(unittest.TestCase):
 
 
 class ArkClawIntegrationSmokeTests(ArkClawSmokeTestCase):
-    @classmethod
-    def setUpClass(cls) -> None:
-        super().setUpClass()
-        if not cls.instance_id:
-            raise unittest.SkipTest("Set ARKCLAW_INSTANCE_ID to run default-instance live smoke tests.")
-
     def test_get_instance(self) -> None:
         instance_id = self._require_default_instance(purpose="get-instance")
         result = self.client.instances.get(space_id=self.space_id, instance_id=instance_id)
         self.assertIsInstance(result, dict)
         self.assertEqual(self._instance_payload(result).get("InstanceId"), instance_id)
+
+    def test_list_instances_with_default_instance_filters(self) -> None:
+        instance_id = self._require_default_instance(purpose="list-instances")
+        result = self.client.instances.list(
+            space_id=self.space_id,
+            instance_ids=[instance_id],
+            max_results=20,
+            recycled=False,
+        )
+        self.assertIsInstance(result, dict)
+        if not self._contains_instance_id(result, instance_id):
+            self.skipTest("Configured ARKCLAW_INSTANCE_ID is not visible in ListClawInstances.")
+        records = self._collect_instance_records(result)
+        self.assertTrue(records)
+        self.assertTrue(all("SpaceId" in record for record in records))
+
+    def test_cli_list_instances_with_default_instance_filter(self) -> None:
+        instance_id = self._require_default_instance(purpose="cli-list-instances")
+        result = self._run_cli_json(
+            "instance",
+            "list",
+            "--space-id",
+            self.space_id,
+            "--instance-id",
+            instance_id,
+            "--max-results",
+            "20",
+            "--recycled",
+            "false",
+        )
+        if not self._contains_instance_id(result, instance_id):
+            self.skipTest("Configured ARKCLAW_INSTANCE_ID is not visible in CLI ListClawInstances.")
 
     def test_get_instance_terminal_token(self) -> None:
         instance_id = self._require_default_instance(purpose="terminal-token")
@@ -957,6 +989,13 @@ class ArkClawIntegrationSmokeHelperTests(unittest.TestCase):
             interval=0.0,
             template_id="ctpl-test",
         )
+
+    def test_require_default_instance_skips_when_configured_instance_is_unusable(self) -> None:
+        case = self._make_case()
+        case.client.instances.get.side_effect = ApiError("not found", code="InvalidInstance.NotFound")
+
+        with self.assertRaises(unittest.SkipTest):
+            case._require_default_instance(purpose="list-instances")
 
 
 class UpdateUsersModelConfigIntegrationSmokeTests(unittest.TestCase):

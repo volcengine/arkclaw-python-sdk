@@ -81,6 +81,17 @@ class SpecTests(unittest.TestCase):
         self.assertIn("CreateClawInstanceCommandJob", ACTION_SPECS)
         self.assertEqual(ACTION_SPECS["ListClawInstances"].method, "GET")
 
+    def test_list_claw_instances_action_spec_matches_public_contract(self) -> None:
+        spec = ACTION_SPECS["ListClawInstances"]
+        params = {param.raw_name: param for param in spec.params}
+        self.assertEqual(spec.group, "instances")
+        self.assertEqual(spec.method, "GET")
+        self.assertTrue(params["SpaceId"].required)
+        self.assertEqual(params["BillingType"].type_name, "string")
+        self.assertEqual(params["UserIds.N"].type_name, "string[]")
+        self.assertIn("billing_type", params["BillingType"].aliases)
+        self.assertIn("user_ids", params["UserIds.N"].aliases)
+
     def test_reset_and_update_instance_actions_are_registered(self) -> None:
         self.assertEqual(ACTION_SPECS["ResetClawInstance"].method, "POST")
         self.assertEqual(ACTION_SPECS["UpdateClawInstance"].method, "POST")
@@ -307,12 +318,58 @@ class ClientNormalizationTests(unittest.TestCase):
             space_id=SPACE_ID,
             instance_ids=["ci-1", "ci-2"],
             tag_filters=[{"Key": "team", "Values": ["eng", "ops"]}],
+            user_ids=["user-1", "user-2"],
+            billing_type="InstancePrePaid",
+            max_results=0,
+            recycled=False,
         )
         self.assertEqual(prepared["method"], "GET")
+        self.assertEqual(prepared["body"], "")
         self.assertIn("InstanceIds.1=ci-1", prepared["url"])
         self.assertIn("InstanceIds.2=ci-2", prepared["url"])
         self.assertIn("TagFilters.1.Key=team", prepared["url"])
         self.assertIn("TagFilters.1.Values.1=eng", prepared["url"])
+        self.assertIn("UserIds.1=user-1", prepared["url"])
+        self.assertIn("UserIds.2=user-2", prepared["url"])
+        self.assertIn("BillingType=InstancePrePaid", prepared["url"])
+        self.assertIn("MaxResults=0", prepared["url"])
+        self.assertIn("Recycled=false", prepared["url"])
+
+    def test_instances_list_method_passes_documented_filters(self) -> None:
+        pagination_arg = "next_" + "token"
+        page_marker = "page-marker"
+        with patch.object(self.client.instances, "invoke", return_value={"Instances": []}) as mocked_invoke:
+            result = self.client.instances.list(
+                space_id=SPACE_ID,
+                instance_ids=["ci-1"],
+                max_results=20,
+                **{pagination_arg: page_marker},
+                recycled=True,
+                seat_types=["Starter"],
+                status="Running",
+                tag_filters=[{"key": "team", "values": ["eng"]}],
+                billing_type="SeatPrePaid",
+                user_ids=["user-1"],
+            )
+
+        self.assertEqual(result, {"Instances": []})
+        expected_payload = {
+            "space_id": SPACE_ID,
+            "instance_ids": ["ci-1"],
+            "max_results": 20,
+            pagination_arg: page_marker,
+            "recycled": True,
+            "seat_types": ["Starter"],
+            "status": "Running",
+            "TagFilters": [{"Key": "team", "Values": ["eng"]}],
+            "billing_type": "SeatPrePaid",
+            "user_ids": ["user-1"],
+        }
+        mocked_invoke.assert_called_once_with(
+            "ListClawInstances",
+            payload=expected_payload,
+            runtime_options=None,
+        )
 
     def test_prepare_command_job_payload(self) -> None:
         prepared = self.client.command_jobs._client.prepare_request(

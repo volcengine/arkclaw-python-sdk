@@ -13,6 +13,9 @@ All notable changes to this project will be documented in this file.
   configuration lookup with optional `UserIds` filter.
 - `ListUsers`: `client.users.list` and `arkclaw user list` for listing users
   in a space with department, group, email, phone, name, and user-ID filters.
+- `ListClawInstances`: completed SDK and CLI filters for billing type and
+  user IDs in addition to existing pagination, instance, status, seat, recycled,
+  and tag filters.
 - `DeleteClawInstances`: `client.instances.delete_many` and
   `arkclaw instance delete-many` for deleting multiple ClawInstances in one
   OpenAPI request while preserving per-instance operation details.
@@ -21,7 +24,7 @@ All notable changes to this project will be documented in this file.
   `arkclaw instance create`.
 - `UpdateClawInstance`: reassign or unbind the owning user via
   `client.instances.update(user_id=...)` / `arkclaw instance update --user-id`,
-  which populates `Patch.UserId.Value` and `FieldMask.Paths=[Patch.UserId]`
+  which populates `Patch.UserId` and `FieldMask.Paths=[Patch.UserId]`
   under the hood. Omitting `user_id` leaves the binding untouched; passing an
   empty string or `None` unbinds the current user.
 
