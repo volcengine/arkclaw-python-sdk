@@ -71,6 +71,7 @@ Instances:
 | `ResetClawInstance` | `client.instances.reset` | `arkclaw instance reset` |
 | `UpdateClawInstance` | `client.instances.update` | `arkclaw instance update` |
 | `DeleteClawInstance` | `client.instances.delete` | `arkclaw instance delete` |
+| `DeleteClawInstances` | `client.instances.delete_many` | `arkclaw instance delete-many` |
 | `GetClawInstanceTerminalToken` | `client.instances.get_terminal_token` | `arkclaw instance terminal-token` |
 
 Users:
@@ -246,7 +247,7 @@ Supported command groups and subcommands:
 |---|---|
 | `space` | `list`, `get`, `update-users-model-config`, `list-users-model-config` |
 | `user` | `create`, `create-many`, `update`, `delete`, `list` |
-| `instance` | `create`, `update-model`, `chat-token`, `get`, `update-channel`, `list`, `start`, `stop`, `reset`, `update`, `delete`, `terminal-token`, `wait` |
+| `instance` | `create`, `update-model`, `chat-token`, `get`, `update-channel`, `list`, `start`, `stop`, `reset`, `update`, `delete`, `delete-many`, `terminal-token`, `wait` |
 | `message` | `send`, `shell` |
 
 Selected examples:
@@ -315,6 +316,12 @@ arkclaw instance delete \
   --space-id csi-xxx \
   --instance-id ci-xxx \
   --recycle true
+
+arkclaw instance delete-many \
+  --space-id csi-xxx \
+  --instance-id ci-xxx \
+  --instance-id ci-yyy \
+  --dry-run true
 
 ```
 

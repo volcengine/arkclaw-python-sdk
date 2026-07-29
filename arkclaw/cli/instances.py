@@ -125,6 +125,14 @@ def register(subparsers: argparse._SubParsersAction) -> None:  # type: ignore[ty
     p.add_argument("--dry-run", choices=["true", "false"], default=None)
     p.set_defaults(func=_delete)
 
+    p = sub.add_parser("delete-many", help="Delete multiple instances")
+    p.add_argument("--space-id", required=True)
+    p.add_argument("--instance-id", action="append", dest="instance_ids", required=True)
+    p.add_argument("--recycle", choices=["true", "false"], default=None)
+    p.add_argument("--client-token", default=None)
+    p.add_argument("--dry-run", choices=["true", "false"], default=None)
+    p.set_defaults(func=_delete_many)
+
     p = sub.add_parser("terminal-token", help="Get terminal token")
     p.add_argument("--space-id", required=True)
     p.add_argument("--instance-id", required=True)
@@ -296,6 +304,21 @@ def _delete(args: argparse.Namespace) -> None:
         client.instances.delete(
             space_id=args.space_id,
             instance_id=args.instance_id,
+            recycle=recycle,
+            client_token=args.client_token,
+            dry_run=dry_run,
+        )
+    )
+
+
+def _delete_many(args: argparse.Namespace) -> None:
+    client = build_client(args)
+    recycle = None if args.recycle is None else args.recycle == "true"
+    dry_run = None if args.dry_run is None else args.dry_run == "true"
+    emit(
+        client.instances.delete_many(
+            space_id=args.space_id,
+            instance_ids=args.instance_ids,
             recycle=recycle,
             client_token=args.client_token,
             dry_run=dry_run,

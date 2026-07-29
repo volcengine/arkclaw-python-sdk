@@ -13,6 +13,9 @@ All notable changes to this project will be documented in this file.
   configuration lookup with optional `UserIds` filter.
 - `ListUsers`: `client.users.list` and `arkclaw user list` for listing users
   in a space with department, group, email, phone, name, and user-ID filters.
+- `DeleteClawInstances`: `client.instances.delete_many` and
+  `arkclaw instance delete-many` for deleting multiple ClawInstances in one
+  OpenAPI request while preserving per-instance operation details.
 - `CreateClawInstance`: new optional parameters `EnableHeadless`,
   `ClientToken`, `DryRun` on `client.instances.create` and
   `arkclaw instance create`.

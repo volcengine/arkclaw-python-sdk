@@ -404,6 +404,18 @@ RAW_ACTION_SPECS: dict[str, RawActionSpec] = {
             ("DryRun", False, "boolean"),
         ],
     },
+    "DeleteClawInstances": {
+        "group": "instances",
+        "method": "POST",
+        "summary": "Delete multiple ArkClaw instances.",
+        "params": [
+            ("SpaceId", True, "string"),
+            ("InstanceIds.N", True, "string[]"),
+            ("Recycle", False, "boolean"),
+            ("ClientToken", False, "string"),
+            ("DryRun", False, "boolean"),
+        ],
+    },
     "GetClawInstanceTerminalToken": {
         "group": "instances",
         "method": "GET",

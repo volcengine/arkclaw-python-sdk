@@ -212,6 +212,28 @@ class CLIParserTests(unittest.TestCase):
         self.assertEqual(args.recycle, "false")
         self.assertEqual(args.dry_run, "true")
 
+    def test_instance_delete_many_args(self) -> None:
+        args = build_parser().parse_args(
+            [
+                "instance",
+                "delete-many",
+                "--space-id",
+                "csi-test",
+                "--instance-id",
+                "ci-1",
+                "--instance-id",
+                "ci-2",
+                "--recycle",
+                "true",
+                "--dry-run",
+                "false",
+            ]
+        )
+        self.assertEqual(args.instance_action, "delete-many")
+        self.assertEqual(args.instance_ids, ["ci-1", "ci-2"])
+        self.assertEqual(args.recycle, "true")
+        self.assertEqual(args.dry_run, "false")
+
     def test_instance_terminal_token_args(self) -> None:
         args = build_parser().parse_args(
             ["instance", "terminal-token", "--space-id", "csi-test", "--instance-id", "ci-test"]
@@ -475,6 +497,37 @@ class CLIDispatchTests(unittest.TestCase):
             instance_id="ci-test",
             recycle=False,
             client_token="token-2",
+            dry_run=True,
+        )
+
+    @patch("arkclaw.cli.instances.build_client")
+    def test_instance_delete_many_dispatches(self, mock_build) -> None:
+        mock_client = MagicMock()
+        mock_client.instances.delete_many.return_value = {"OperationDetails": [{"InstanceId": "ci-1"}]}
+        mock_build.return_value = mock_client
+
+        code = main(
+            [
+                "instance",
+                "delete-many",
+                "--space-id",
+                "csi-test",
+                "--instance-id",
+                "ci-1",
+                "--instance-id",
+                "ci-2",
+                "--recycle",
+                "true",
+                "--dry-run",
+                "true",
+            ]
+        )
+        self.assertEqual(code, 0)
+        mock_client.instances.delete_many.assert_called_once_with(
+            space_id="csi-test",
+            instance_ids=["ci-1", "ci-2"],
+            recycle=True,
+            client_token=None,
             dry_run=True,
         )
 

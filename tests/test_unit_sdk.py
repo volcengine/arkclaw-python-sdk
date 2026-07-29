@@ -105,11 +105,17 @@ class SpecTests(unittest.TestCase):
         self.assertEqual(ACTION_SPECS["UpdateUsersModelConfig"].method, "POST") 
         self.assertEqual(ACTION_SPECS["StopClawInstance"].method, "POST")
         self.assertEqual(ACTION_SPECS["DeleteClawInstance"].method, "POST")
+        self.assertEqual(ACTION_SPECS["DeleteClawInstances"].method, "POST")
         self.assertEqual(ACTION_SPECS["GetClawInstanceTerminalToken"].method, "GET")
         self.assertIn("UpdateUsersModelConfig", GROUP_TO_ACTIONS["spaces"])
         self.assertIn("ModelConfig", [param.body_name for param in ACTION_SPECS["UpdateUsersModelConfig"].required_params])
         self.assertIn("StopClawInstance", GROUP_TO_ACTIONS["instances"])
         self.assertIn("DeleteClawInstance", GROUP_TO_ACTIONS["instances"])
+        self.assertIn("DeleteClawInstances", GROUP_TO_ACTIONS["instances"])
+        self.assertEqual(
+            [param.body_name for param in ACTION_SPECS["DeleteClawInstances"].required_params],
+            ["SpaceId", "InstanceIds"],
+        )
         self.assertIn("GetClawInstanceTerminalToken", GROUP_TO_ACTIONS["instances"])
 
 
@@ -220,6 +226,27 @@ class ClientNormalizationTests(unittest.TestCase):
                 "ClientToken": "token-2",
             },
         )
+        self.assertNotIn("Recycle", prepared["payload"])
+
+    def test_prepare_delete_many_uses_post_body(self) -> None:
+        prepared = self.client.prepare_request(
+            "DeleteClawInstances",
+            space_id=SPACE_ID,
+            instance_ids=["ci-1", "ci-2"],
+            recycle=None,
+            dry_run=False,
+        )
+        self.assertEqual(prepared["method"], "POST")
+        self.assertEqual(
+            prepared["payload"],
+            {
+                "SpaceId": SPACE_ID,
+                "InstanceIds": ["ci-1", "ci-2"],
+                "DryRun": False,
+            },
+        )
+        self.assertEqual(json.loads(prepared["body"]), prepared["payload"])
+        self.assertIn("Action=DeleteClawInstances", prepared["url"])
         self.assertNotIn("Recycle", prepared["payload"])
 
     def test_prepare_reset_instance_uses_post_body(self) -> None:
@@ -471,6 +498,45 @@ class ClientRequestTests(unittest.TestCase):
         self.assertEqual(context.exception.code, "IdempotentParameterMismatch")
         self.assertEqual(context.exception.request_id, "req-delete")
         self.assertEqual(context.exception.action, "DeleteClawInstance")
+
+    def test_delete_many_returns_operation_details_and_sends_post_body(self) -> None:
+        operation_details = [
+            {"InstanceId": "ci-1"},
+            {
+                "InstanceId": "ci-2",
+                "Error": {
+                    "Code": "InvalidInstanceStatus",
+                    "Message": "The ClawInstance status does not allow deletion.",
+                },
+            },
+        ]
+        self.transport.responses.append(
+            make_response(
+                {
+                    "ResponseMetadata": {"RequestId": "req-delete-many"},
+                    "Result": {"OperationDetails": operation_details},
+                }
+            )
+        )
+        result = self.client.instances.delete_many(
+            space_id=SPACE_ID,
+            instance_ids=["ci-1", "ci-2"],
+            recycle=True,
+            dry_run=True,
+        )
+        self.assertEqual(result, {"OperationDetails": operation_details})
+        request = self.transport.calls[0]
+        self.assertEqual(request["method"], "POST")
+        self.assertIn("Action=DeleteClawInstances", request["url"])
+        self.assertEqual(
+            json.loads(request["body"].decode("utf-8")),
+            {
+                "SpaceId": SPACE_ID,
+                "InstanceIds": ["ci-1", "ci-2"],
+                "Recycle": True,
+                "DryRun": True,
+            },
+        )
 
     def test_reset_returns_empty_result_and_sends_post_body(self) -> None:
         self.transport.responses.append(

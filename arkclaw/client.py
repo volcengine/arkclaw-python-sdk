@@ -630,6 +630,26 @@ class InstanceOperations(ResourceBase):
             runtime_options=runtime_options,
         )
 
+    def delete_many(
+        self,
+        *,
+        space_id: str,
+        instance_ids: List[str],
+        recycle: Optional[bool] = None,
+        client_token: Optional[str] = None,
+        dry_run: Optional[bool] = None,
+        runtime_options: Optional[RuntimeOptions] = None,
+    ) -> dict[str, Any]:
+        return self.invoke(
+            "DeleteClawInstances",
+            space_id=space_id,
+            instance_ids=instance_ids,
+            recycle=recycle,
+            client_token=client_token,
+            dry_run=dry_run,
+            runtime_options=runtime_options,
+        )
+
     def get_terminal_token(
         self,
         *,
