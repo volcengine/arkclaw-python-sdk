@@ -195,6 +195,12 @@ class ArkClawSmokeTestCase(unittest.TestCase):
             self.skipTest(f"Set ARKCLAW_INSTANCE_ID to run the {purpose} live smoke test.")
         return self.instance_id
 
+    def _require_named_env(self, name: str, *, purpose: str) -> str:
+        raw = os.getenv(name)
+        if raw is None or raw.strip() == "":
+            self.skipTest(f"Set {name} to run the {purpose} live smoke test.")
+        return raw.strip()
+
     def _require_lifecycle_user_id(self, *, purpose: str) -> str:
         if not self.lifecycle_user_id:
             self.skipTest(
@@ -428,6 +434,23 @@ class ArkClawIntegrationSmokeTests(ArkClawSmokeTestCase):
         self.assertEqual(result.get("InstanceId"), instance_id)
         self.assertTrue(result.get("TerminalToken"))
         self.assertTrue(result.get("Endpoint"))
+
+    def test_update_instance_model(self) -> None:
+        instance_id = self._require_default_instance(purpose="update-instance-model")
+        model_name = self._require_named_env("ARKCLAW_E2E_MODEL_NAME", purpose="update-instance-model")
+        model_source = self._require_named_env("ARKCLAW_E2E_MODEL_SOURCE", purpose="update-instance-model")
+        if model_source not in {"CodingPlan", "ModelSquare", "Custom"}:
+            self.skipTest("ARKCLAW_E2E_MODEL_SOURCE must be CodingPlan, ModelSquare, or Custom.")
+
+        result = self.client.instances.update_model(
+            instance_id=instance_id,
+            model_name=model_name,
+            model_source=model_source,
+            model_access_point_id=os.getenv("ARKCLAW_E2E_MODEL_ACCESS_POINT_ID") or None,
+            model_api_key=os.getenv("ARKCLAW_E2E_MODEL_API_KEY") or None,
+        )
+
+        self.assertEqual(result, {})
 
     def test_cli_terminal_token(self) -> None:
         instance_id = self._require_default_instance(purpose="cli-terminal-token")

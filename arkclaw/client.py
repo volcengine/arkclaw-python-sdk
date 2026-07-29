@@ -450,12 +450,16 @@ class InstanceOperations(ResourceBase):
         instance_id: str,
         model_name: str,
         model_source: str,
+        model_access_point_id: Optional[str] = None,
+        model_api_key: Optional[str] = None,
         runtime_options: Optional[RuntimeOptions] = None,
         **kwargs: Any,
     ) -> dict[str, Any]:
         return self.invoke(
             "UpdateClawInstanceModel",
             instance_id=instance_id,
+            model_access_point_id=model_access_point_id,
+            model_api_key=model_api_key,
             model_name=model_name,
             model_source=model_source,
             runtime_options=runtime_options,

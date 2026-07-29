@@ -87,6 +87,16 @@ class SpecTests(unittest.TestCase):
         self.assertIn("ResetClawInstance", GROUP_TO_ACTIONS["instances"])
         self.assertIn("UpdateClawInstance", GROUP_TO_ACTIONS["instances"])
 
+    def test_update_instance_model_action_spec_is_registered(self) -> None:
+        spec = ACTION_SPECS["UpdateClawInstanceModel"]
+        self.assertEqual(spec.method, "POST")
+        self.assertIn("UpdateClawInstanceModel", GROUP_TO_ACTIONS["instances"])
+        self.assertEqual(
+            [param.body_name for param in spec.required_params],
+            ["InstanceId", "ModelName", "ModelSource"],
+        )
+        self.assertIn("ModelAccessPointId", [param.body_name for param in spec.params])
+
     def test_update_users_model_config_action_spec_is_registered(self) -> None:
         spec = ACTION_SPECS["UpdateUsersModelConfig"]
         self.assertIn("ModelConfig", [param.body_name for param in spec.required_params])
@@ -137,6 +147,29 @@ class ClientNormalizationTests(unittest.TestCase):
         )
         self.assertIn("Version=2026-05-01", prepared["url"])
         self.assertEqual(prepared["method"], "POST")
+
+    def test_prepare_update_instance_model_payload(self) -> None:
+        prepared = self.client.prepare_request(
+            "UpdateClawInstanceModel",
+            instance_id=INSTANCE_ID,
+            model_access_point_id="csmap-test",
+            model_api_key=None,
+            model_name="doubao-seed-2.0-pro",
+            model_source="Custom",
+        )
+        self.assertEqual(prepared["method"], "POST")
+        self.assertEqual(
+            prepared["payload"],
+            {
+                "InstanceId": INSTANCE_ID,
+                "ModelAccessPointId": "csmap-test",
+                "ModelName": "doubao-seed-2.0-pro",
+                "ModelSource": "Custom",
+            },
+        )
+        self.assertEqual(json.loads(prepared["body"]), prepared["payload"])
+        self.assertIn("Action=UpdateClawInstanceModel", prepared["url"])
+        self.assertNotIn("ModelApiKey", prepared["payload"])
 
     def test_prepare_get_instance_uses_query_parameters(self) -> None:
         prepared = self.client.prepare_request(
@@ -387,6 +420,37 @@ class ClientRequestTests(unittest.TestCase):
             },
         )
 
+    def test_update_model_returns_empty_result_and_sends_post_body(self) -> None:
+        self.transport.responses.append(
+            make_response(
+                {
+                    "ResponseMetadata": {"RequestId": "req-update-model"},
+                    "Result": {},
+                }
+            )
+        )
+        result = self.client.instances.update_model(
+            instance_id=INSTANCE_ID,
+            model_name="doubao-seed-2.0-pro",
+            model_source="Custom",
+            model_access_point_id="csmap-test",
+            model_api_key="model-key",
+        )
+        self.assertEqual(result, {})
+        request = self.transport.calls[0]
+        self.assertEqual(request["method"], "POST")
+        self.assertIn("Action=UpdateClawInstanceModel", request["url"])
+        self.assertEqual(
+            json.loads(request["body"].decode("utf-8")),
+            {
+                "InstanceId": INSTANCE_ID,
+                "ModelAccessPointId": "csmap-test",
+                "ModelApiKey": "model-key",
+                "ModelName": "doubao-seed-2.0-pro",
+                "ModelSource": "Custom",
+            },
+        )
+
     def test_delete_preserves_api_error_code(self) -> None:
         self.transport.responses.append(
             make_response(
@@ -519,6 +583,14 @@ class ClientRequestTests(unittest.TestCase):
     def test_stop_missing_required_fields_raise_validation_error(self) -> None:
         with self.assertRaises(ValidationError):
             self.client.instances.stop(space_id=SPACE_ID, instance_id="")
+
+    def test_update_model_missing_required_fields_raise_validation_error(self) -> None:
+        with self.assertRaises(ValidationError):
+            self.client.instances.update_model(
+                instance_id=INSTANCE_ID,
+                model_name="",
+                model_source="CodingPlan",
+            )
 
     def test_runtime_options_override_request_settings(self) -> None:
         self.transport.responses.append(

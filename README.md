@@ -432,8 +432,8 @@ python -m unittest tests.test_integration_smoke
 
 `ARKCLAW_INSTANCE_ID` can optionally select an existing instance. Lifecycle
 tests provision temporary instances when the required test-user configuration
-is available. Additional model-configuration smoke cases use the optional
-`ARKCLAW_MODEL_CONFIG_*` environment variables documented in
+is available. Additional smoke cases use optional environment variables
+documented in
 `tests/test_integration_smoke.py`.
 
 ## License

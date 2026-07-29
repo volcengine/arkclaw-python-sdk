@@ -118,6 +118,24 @@ class CLIParserTests(unittest.TestCase):
         self.assertEqual(args.instance_action, "create")
         self.assertEqual(args.template_id, "ctpl-test")
 
+    def test_instance_update_model_args(self) -> None:
+        args = build_parser().parse_args(
+            [
+                "instance",
+                "update-model",
+                "--instance-id",
+                "ci-test",
+                "--model-name",
+                "doubao-seed-2.0-pro",
+                "--model-source",
+                "Custom",
+                "--model-access-point-id",
+                "csmap-test",
+            ]
+        )
+        self.assertEqual(args.instance_action, "update-model")
+        self.assertEqual(args.model_access_point_id, "csmap-test")
+
     def test_instance_stop_args(self) -> None:
         args = build_parser().parse_args(
             [
@@ -368,6 +386,37 @@ class CLIDispatchTests(unittest.TestCase):
             template_id="ctpl-test",
             timeout=600,
             interval=5,
+        )
+
+    @patch("arkclaw.cli.instances.build_client")
+    def test_instance_update_model_dispatches(self, mock_build) -> None:
+        mock_client = MagicMock()
+        mock_client.instances.update_model.return_value = {}
+        mock_build.return_value = mock_client
+
+        code = main(
+            [
+                "instance",
+                "update-model",
+                "--instance-id",
+                "ci-test",
+                "--model-name",
+                "doubao-seed-2.0-pro",
+                "--model-source",
+                "Custom",
+                "--model-access-point-id",
+                "csmap-test",
+                "--model-api-key",
+                "model-key",
+            ]
+        )
+        self.assertEqual(code, 0)
+        mock_client.instances.update_model.assert_called_once_with(
+            instance_id="ci-test",
+            model_name="doubao-seed-2.0-pro",
+            model_source="Custom",
+            model_access_point_id="csmap-test",
+            model_api_key="model-key",
         )
 
     @patch("arkclaw.cli.instances.build_client")

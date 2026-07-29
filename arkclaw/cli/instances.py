@@ -49,6 +49,7 @@ def register(subparsers: argparse._SubParsersAction) -> None:  # type: ignore[ty
     p.add_argument("--instance-id", required=True)
     p.add_argument("--model-name", required=True)
     p.add_argument("--model-source", required=True, choices=["CodingPlan", "ModelSquare", "Custom"])
+    p.add_argument("--model-access-point-id", default=None)
     p.add_argument("--model-api-key", default=None)
     p.set_defaults(func=_update_model)
 
@@ -178,6 +179,7 @@ def _update_model(args: argparse.Namespace) -> None:
             instance_id=args.instance_id,
             model_name=args.model_name,
             model_source=args.model_source,
+            model_access_point_id=args.model_access_point_id,
             model_api_key=args.model_api_key,
         )
     )

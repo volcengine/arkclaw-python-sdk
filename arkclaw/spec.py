@@ -295,6 +295,7 @@ RAW_ACTION_SPECS: dict[str, RawActionSpec] = {
         "summary": "Update the model used by a running ArkClaw instance.",
         "params": [
             ("InstanceId", True, "string"),
+            ("ModelAccessPointId", False, "string"),
             ("ModelApiKey", False, "string"),
             ("ModelName", True, "string"),
             ("ModelSource", True, "string"),
