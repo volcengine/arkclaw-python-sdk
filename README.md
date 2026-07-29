@@ -52,7 +52,9 @@ Spaces:
 | OpenAPI action | SDK method | CLI command |
 |---|---|---|
 | `ListClawSpaces` | `client.spaces.list` | `arkclaw space list` |
+| `GetClawSpace` | `client.spaces.get` | `arkclaw space get` |
 | `UpdateUsersModelConfig` | `client.spaces.update_users_model_config` | `arkclaw space update-users-model-config` |
+| `ListUsersModelConfig` | `client.spaces.list_users_model_config` | `arkclaw space list-users-model-config` |
 
 Instances:
 
@@ -79,6 +81,7 @@ Users:
 | `CreateUser` | `client.users.create` | `arkclaw user create` |
 | `UpdateUser` | `client.users.update` | `arkclaw user update` |
 | `DeleteUser` | `client.users.delete` | `arkclaw user delete` |
+| `ListUsers` | `client.users.list` | `arkclaw user list` |
 
 Additional SDK workflows include `wait_for_instance`, `provision_instance`, and
 `prepare_chat_access` under `client.workflows`.
@@ -91,6 +94,20 @@ from arkclaw import ArkClawClient
 client = ArkClawClient.from_env()
 
 spaces = client.spaces.list()
+
+space = client.spaces.get(space_id="csi-xxx")
+
+user_configs = client.spaces.list_users_model_config(
+    space_id="csi-xxx",
+    user_ids=["user-xxx"],
+    max_results=20,
+)
+
+users_page = client.users.list(
+    space_id="csi-xxx",
+    filter={"name": "zhang", "user_ids": ["user-xxx"]},
+    max_results=20,
+)
 
 model_config_result = client.spaces.update_users_model_config(
     space_id="csi-xxx",
@@ -126,6 +143,12 @@ client.instances.update(
     space_id="csi-xxx",
     instance_id=instance["InstanceId"],
     instance_name="demo-claw-renamed",
+)
+
+client.instances.update(
+    space_id="csi-xxx",
+    instance_id=instance["InstanceId"],
+    user_id="user-yyy",  # pass "" to unbind the current owner
 )
 
 terminal = client.instances.get_terminal_token(
@@ -221,8 +244,8 @@ Supported command groups and subcommands:
 
 | Group | Subcommands |
 |---|---|
-| `space` | `list`, `update-users-model-config` |
-| `user` | `create`, `create-many`, `update`, `delete` |
+| `space` | `list`, `get`, `update-users-model-config`, `list-users-model-config` |
+| `user` | `create`, `create-many`, `update`, `delete`, `list` |
 | `instance` | `create`, `update-model`, `chat-token`, `get`, `update-channel`, `list`, `start`, `stop`, `reset`, `update`, `delete`, `terminal-token`, `wait` |
 | `message` | `send`, `shell` |
 
@@ -231,10 +254,23 @@ Selected examples:
 ```bash
 arkclaw space list
 
+arkclaw space get --space-id csi-xxx
+
+arkclaw space list-users-model-config \
+  --space-id csi-xxx \
+  --user-id user-xxx \
+  --max-results 20
+
 arkclaw space update-users-model-config \
   --space-id csi-xxx \
   --user-id user-xxx \
   --coding-plan-seat-type Lite
+
+arkclaw user list \
+  --space-id csi-xxx \
+  --filter-name zhang \
+  --filter-user-id user-xxx \
+  --max-results 20
 
 arkclaw user create \
   --space-id csi-xxx \
@@ -265,6 +301,11 @@ arkclaw instance update \
   --space-id csi-xxx \
   --instance-id ci-xxx \
   --instance-name demo-claw-renamed
+
+arkclaw instance update \
+  --space-id csi-xxx \
+  --instance-id ci-xxx \
+  --user-id user-yyy   # pass "" to unbind the current owner
 
 arkclaw instance terminal-token \
   --space-id csi-xxx \

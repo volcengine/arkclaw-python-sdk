@@ -30,6 +30,10 @@ def register(subparsers: argparse._SubParsersAction) -> None:  # type: ignore[ty
     p.add_argument("--space-name", default=None)
     p.set_defaults(func=_list)
 
+    p = sub.add_parser("get", help="Get ClawSpace detail")
+    p.add_argument("--space-id", required=True)
+    p.set_defaults(func=_get)
+
     p = sub.add_parser("update-users-model-config", help="Update codingPlan seat type and token limits for users")
     p.add_argument("--space-id", required=True)
     p.add_argument("--user-id", dest="user_ids", action="append", required=True)
@@ -37,6 +41,13 @@ def register(subparsers: argparse._SubParsersAction) -> None:  # type: ignore[ty
     p.add_argument("--token-rate-limit-per-minute", type=int, default=None)
     p.add_argument("--token-rate-limit-per-day", type=int, default=None)
     p.set_defaults(func=_update_users_model_config)
+
+    p = sub.add_parser("list-users-model-config", help="List user model configurations in a space")
+    p.add_argument("--space-id", required=True)
+    p.add_argument("--user-id", dest="user_ids", action="append", default=None)
+    p.add_argument("--max-results", type=int, default=None)
+    p.add_argument("--next-token", default=None)
+    p.set_defaults(func=_list_users_model_config)
 
 
 def _model_config_kwargs(args: argparse.Namespace) -> dict[str, Any]:
@@ -52,6 +63,11 @@ def _list(args: argparse.Namespace) -> None:
     emit(client.spaces.list(project_name=args.project_name, space_name=args.space_name))
 
 
+def _get(args: argparse.Namespace) -> None:
+    client = build_client(args)
+    emit(client.spaces.get(space_id=args.space_id))
+
+
 def _update_users_model_config(args: argparse.Namespace) -> None:
     client = build_client(args)
     emit(
@@ -59,5 +75,17 @@ def _update_users_model_config(args: argparse.Namespace) -> None:
             space_id=args.space_id,
             user_ids=args.user_ids,
             model_config=_model_config_kwargs(args),
+        )
+    )
+
+
+def _list_users_model_config(args: argparse.Namespace) -> None:
+    client = build_client(args)
+    emit(
+        client.spaces.list_users_model_config(
+            space_id=args.space_id,
+            user_ids=args.user_ids,
+            max_results=args.max_results,
+            next_token=args.next_token,
         )
     )

@@ -22,8 +22,15 @@ from typing import TypedDict
 DEFAULT_VERSION = "2026-05-01"
 
 
+_LIST_MARKER_RE = re.compile(r"\.[Nn](?=\.|$)")
+
+
+def _strip_list_markers(name: str) -> str:
+    return _LIST_MARKER_RE.sub("", name)
+
+
 def _to_snake(name: str) -> str:
-    cleaned = name.replace(".N", "")
+    cleaned = _strip_list_markers(name)
     cleaned = cleaned.replace(".", "_")
     cleaned = re.sub(r"(?<!^)(?=[A-Z])", "_", cleaned)
     cleaned = cleaned.replace("__", "_")
@@ -38,11 +45,11 @@ class ParameterSpec:
 
     @property
     def is_list(self) -> bool:
-        return ".N" in self.raw_name
+        return bool(_LIST_MARKER_RE.search(self.raw_name))
 
     @property
     def body_name(self) -> str:
-        return self.raw_name.replace(".N", "")
+        return _strip_list_markers(self.raw_name)
 
     @property
     def path(self) -> tuple[str, ...]:
@@ -162,18 +169,27 @@ RAW_ACTION_SPECS: dict[str, RawActionSpec] = {
             ("SpaceName", False, "string"),
         ],
     },
+    "GetClawSpace": {
+        "group": "spaces",
+        "method": "GET",
+        "summary": "Get ArkClaw space detail.",
+        "params": [
+            ("SpaceId", True, "string"),
+        ],
+    },
     "CreateUsers": {
         "group": "users",
         "method": "POST",
         "summary": "Create multiple users in an ArkClaw space.",
         "params": [
             ("SpaceId", True, "string"),
-            ("Users.N.Email", False, "string[]"),
-            ("Users.N.ExternalProviderUserIdentifier", False, "string[]"),
-            ("Users.N.Name", False, "string[]"),
-            ("Users.N.Password", False, "string[]"),
-            ("Users.N.PhoneNumber", False, "string[]"),
-            ("Users.N.PreferredUsername", False, "string[]"),
+            ("Users", True, "object[]"),
+            ("Users.N.Email", False, "string"),
+            ("Users.N.ExternalProviderUserIdentifier", False, "string"),
+            ("Users.N.Name", False, "string"),
+            ("Users.N.Password", False, "string"),
+            ("Users.N.PhoneNumber", False, "string"),
+            ("Users.N.PreferredUsername", False, "string"),
         ],
     },
     "DeleteUser": {
@@ -212,6 +228,26 @@ RAW_ACTION_SPECS: dict[str, RawActionSpec] = {
             ("UserId", True, "string"),
         ],
     },
+    "ListUsers": {
+        "group": "users",
+        "method": "GET",
+        "summary": "List users in an ArkClaw space with optional filters.",
+        "params": [
+            ("Filter.DepartmentUid", False, "string"),
+            ("Filter.DepartmentUidRecursive", False, "boolean"),
+            ("Filter.Email", False, "string"),
+            ("Filter.EmailPhoneNameIsNullOrEmpty", False, "boolean"),
+            ("Filter.GroupUid", False, "string"),
+            ("Filter.Name", False, "string"),
+            ("Filter.NotInAnyDepartment", False, "boolean"),
+            ("Filter.NotInAnyGroup", False, "boolean"),
+            ("Filter.PhoneNumber", False, "string"),
+            ("Filter.UserIds.N", False, "string[]"),
+            ("MaxResults", False, "integer"),
+            ("NextToken", False, "string"),
+            ("SpaceId", True, "string"),
+        ],
+    },
     "UpdateUsersModelConfig": {
         "group": "spaces",
         "method": "POST",
@@ -225,18 +261,32 @@ RAW_ACTION_SPECS: dict[str, RawActionSpec] = {
             ("ModelConfig", True, "object"),
         ],
     },
+    "ListUsersModelConfig": {
+        "group": "spaces",
+        "method": "GET",
+        "summary": "List user model configurations in an ArkClaw space.",
+        "params": [
+            ("MaxResults", False, "integer"),
+            ("NextToken", False, "string"),
+            ("SpaceId", True, "string"),
+            ("UserIds.N", False, "string[]"),
+        ],
+    },
     "CreateClawInstance": {
         "group": "instances",
         "method": "POST",
         "summary": "Create an ArkClaw instance.",
         "params": [
+            ("ClientToken", False, "string"),
             ("Description", False, "string"),
+            ("DryRun", False, "boolean"),
+            ("EnableHeadless", False, "boolean"),
             ("InstanceName", True, "string"),
             ("ModelApiKey", False, "string"),
             ("SeatType", True, "string"),
             ("SpaceId", True, "string"),
             ("TemplateId", False, "string"),
-            ("UserId", True, "string"),
+            ("UserId", False, "string"),
         ],
     },
     "UpdateClawInstanceModel": {
@@ -335,6 +385,8 @@ RAW_ACTION_SPECS: dict[str, RawActionSpec] = {
             ("SpaceId", True, "string"),
             ("InstanceId", True, "string"),
             ("InstanceName", False, "string"),
+            ("Patch.UserId", False, "string"),
+            ("FieldMask.Paths.N", False, "string[]"),
             ("ClientToken", False, "string"),
             ("DryRun", False, "boolean"),
         ],
