@@ -27,6 +27,11 @@ All notable changes to this project will be documented in this file.
   which populates `Patch.UserId` and `FieldMask.Paths=[Patch.UserId]`
   under the hood. Omitting `user_id` leaves the binding untouched; passing an
   empty string or `None` unbinds the current user.
+- Snapshot lifecycle: `CreateClawInstanceSnapshots`,
+  `GetClawInstanceSnapshot`, `ListClawInstanceSnapshots`,
+  `DeleteClawInstanceSnapshot`, and `RestoreClawInstanceSnapshot` exposed as
+  `client.snapshots.{create,get,list,delete,restore}` and the
+  `arkclaw snapshot ...` CLI command group.
 
 ### Changed
 

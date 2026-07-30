@@ -84,6 +84,16 @@ Users:
 | `DeleteUser` | `client.users.delete` | `arkclaw user delete` |
 | `ListUsers` | `client.users.list` | `arkclaw user list` |
 
+Snapshots:
+
+| OpenAPI action | SDK method | CLI command |
+|---|---|---|
+| `CreateClawInstanceSnapshots` | `client.snapshots.create` | `arkclaw snapshot create` |
+| `GetClawInstanceSnapshot` | `client.snapshots.get` | `arkclaw snapshot get` |
+| `ListClawInstanceSnapshots` | `client.snapshots.list` | `arkclaw snapshot list` |
+| `DeleteClawInstanceSnapshot` | `client.snapshots.delete` | `arkclaw snapshot delete` |
+| `RestoreClawInstanceSnapshot` | `client.snapshots.restore` | `arkclaw snapshot restore` |
+
 Additional SDK workflows include `wait_for_instance`, `provision_instance`, and
 `prepare_chat_access` under `client.workflows`.
 
@@ -161,6 +171,17 @@ client.instances.delete(
     space_id="csi-xxx",
     instance_id=instance["InstanceId"],
     recycle=True,
+)
+
+snap = client.snapshots.create(
+    space_id="csi-xxx",
+    instance_ids=[instance["InstanceId"]],
+)
+client.snapshots.list(space_id="csi-xxx")
+client.snapshots.restore(
+    space_id="csi-xxx",
+    instance_id=instance["InstanceId"],
+    snapshot_id="snap-xxx",
 )
 ```
 
@@ -248,6 +269,7 @@ Supported command groups and subcommands:
 | `space` | `list`, `get`, `update-users-model-config`, `list-users-model-config` |
 | `user` | `create`, `create-many`, `update`, `delete`, `list` |
 | `instance` | `create`, `update-model`, `chat-token`, `get`, `update-channel`, `list`, `start`, `stop`, `reset`, `update`, `delete`, `delete-many`, `terminal-token`, `wait` |
+| `snapshot` | `create`, `get`, `list`, `delete`, `restore` |
 | `message` | `send`, `shell` |
 
 Selected examples:
@@ -322,6 +344,17 @@ arkclaw instance delete-many \
   --instance-id ci-xxx \
   --instance-id ci-yyy \
   --dry-run true
+
+arkclaw snapshot create \
+  --space-id csi-xxx \
+  --instance-id ci-xxx
+
+arkclaw snapshot list --space-id csi-xxx
+
+arkclaw snapshot restore \
+  --space-id csi-xxx \
+  --instance-id ci-xxx \
+  --snapshot-id snap-xxx
 
 ```
 

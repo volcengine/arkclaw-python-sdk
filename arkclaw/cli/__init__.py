@@ -20,7 +20,7 @@ import argparse
 import sys
 
 from ._common import add_client_args
-from . import command_jobs, instances, messages, spaces, users
+from . import command_jobs, instances, messages, snapshots, spaces, users
 
 
 def build_parser() -> argparse.ArgumentParser:
@@ -37,6 +37,7 @@ def build_parser() -> argparse.ArgumentParser:
     spaces.register(subparsers)
     users.register(subparsers)
     instances.register(subparsers)
+    snapshots.register(subparsers)
     messages.register(subparsers)
 
     return parser

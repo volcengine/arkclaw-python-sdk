@@ -681,6 +681,102 @@ class InstanceOperations(ResourceBase):
         )
 
 
+class SnapshotOperations(ResourceBase):
+    actions = GROUP_TO_ACTIONS["snapshots"]
+
+    def create(
+        self,
+        *,
+        space_id: str,
+        instance_ids: list[str],
+        client_token: Optional[str] = None,
+        dry_run: Optional[bool] = None,
+        runtime_options: Optional[RuntimeOptions] = None,
+    ) -> dict[str, Any]:
+        payload = _compact_dict(
+            {
+                "space_id": space_id,
+                "InstanceIds": instance_ids,
+                "client_token": client_token,
+                "dry_run": dry_run,
+            }
+        )
+        return self.invoke("CreateClawInstanceSnapshots", payload=payload, runtime_options=runtime_options)
+
+    def get(
+        self,
+        *,
+        space_id: str,
+        snapshot_id: str,
+        runtime_options: Optional[RuntimeOptions] = None,
+    ) -> dict[str, Any]:
+        return self.invoke(
+            "GetClawInstanceSnapshot",
+            space_id=space_id,
+            snapshot_id=snapshot_id,
+            runtime_options=runtime_options,
+        )
+
+    def list(
+        self,
+        *,
+        space_id: str,
+        instance_ids: Optional[list[str]] = None,
+        statuses: Optional[list[str]] = None,
+        max_results: Optional[int] = None,
+        next_token: Optional[str] = None,
+        runtime_options: Optional[RuntimeOptions] = None,
+    ) -> dict[str, Any]:
+        payload = _compact_dict(
+            {
+                "space_id": space_id,
+                "InstanceIds": instance_ids,
+                "Statuses": statuses,
+                "max_results": max_results,
+                "next_token": next_token,
+            }
+        )
+        return self.invoke("ListClawInstanceSnapshots", payload=payload, runtime_options=runtime_options)
+
+    def delete(
+        self,
+        *,
+        space_id: str,
+        snapshot_id: str,
+        client_token: Optional[str] = None,
+        dry_run: Optional[bool] = None,
+        runtime_options: Optional[RuntimeOptions] = None,
+    ) -> dict[str, Any]:
+        return self.invoke(
+            "DeleteClawInstanceSnapshot",
+            space_id=space_id,
+            snapshot_id=snapshot_id,
+            client_token=client_token,
+            dry_run=dry_run,
+            runtime_options=runtime_options,
+        )
+
+    def restore(
+        self,
+        *,
+        space_id: str,
+        instance_id: str,
+        snapshot_id: str,
+        client_token: Optional[str] = None,
+        dry_run: Optional[bool] = None,
+        runtime_options: Optional[RuntimeOptions] = None,
+    ) -> dict[str, Any]:
+        return self.invoke(
+            "RestoreClawInstanceSnapshot",
+            space_id=space_id,
+            instance_id=instance_id,
+            snapshot_id=snapshot_id,
+            client_token=client_token,
+            dry_run=dry_run,
+            runtime_options=runtime_options,
+        )
+
+
 class ArkClawClient:
     def __init__(
         self,
@@ -742,6 +838,7 @@ class ArkClawClient:
         self.spaces = SpaceOperations(self)
         self.users = UserOperations(self)
         self.instances = InstanceOperations(self)
+        self.snapshots = SnapshotOperations(self)
 
         from .workflows import ArkClawWorkflows
 

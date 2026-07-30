@@ -418,11 +418,65 @@ RAW_ACTION_SPECS: dict[str, RawActionSpec] = {
             ("DryRun", False, "boolean"),
         ],
     },
+    "CreateClawInstanceSnapshots": {
+        "group": "snapshots",
+        "method": "POST",
+        "summary": "Create snapshots for one or more ArkClaw instances.",
+        "params": [
+            ("SpaceId", True, "string"),
+            ("InstanceIds.N", True, "string[]"),
+            ("ClientToken", False, "string"),
+            ("DryRun", False, "boolean"),
+        ],
+    },
+    "GetClawInstanceSnapshot": {
+        "group": "snapshots",
+        "method": "GET",
+        "summary": "Get ArkClaw instance snapshot detail.",
+        "params": [
+            ("SpaceId", True, "string"),
+            ("SnapshotId", True, "string"),
+        ],
+    },
+    "ListClawInstanceSnapshots": {
+        "group": "snapshots",
+        "method": "GET",
+        "summary": "List ArkClaw instance snapshots.",
+        "params": [
+            ("SpaceId", True, "string"),
+            ("InstanceIds.N", False, "string[]"),
+            ("MaxResults", False, "integer"),
+            ("NextToken", False, "string"),
+            ("Statuses.N", False, "string[]"),
+        ],
+    },
+    "DeleteClawInstanceSnapshot": {
+        "group": "snapshots",
+        "method": "POST",
+        "summary": "Delete an ArkClaw instance snapshot.",
+        "params": [
+            ("SpaceId", True, "string"),
+            ("SnapshotId", True, "string"),
+            ("ClientToken", False, "string"),
+            ("DryRun", False, "boolean"),
+        ],
+    },
+    "RestoreClawInstanceSnapshot": {
+        "group": "snapshots",
+        "method": "POST",
+        "summary": "Restore an ArkClaw instance from a snapshot.",
+        "params": [
+            ("SpaceId", True, "string"),
+            ("InstanceId", True, "string"),
+            ("SnapshotId", True, "string"),
+            ("ClientToken", False, "string"),
+            ("DryRun", False, "boolean"),
+        ],
+    },
     "GetClawInstanceTerminalToken": {
         "group": "instances",
         "method": "GET",
-        "summary": "Get a terminal token and endpoint for an ArkClaw instance.",
-        "params": [
+        "summary": "Get a terminal token and endpoint for an ArkClaw instance.",        "params": [
             ("SpaceId", True, "string"),
             ("InstanceId", True, "string"),
         ],
