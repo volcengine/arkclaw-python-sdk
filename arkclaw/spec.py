@@ -493,6 +493,29 @@ RAW_ACTION_SPECS: dict[str, RawActionSpec] = {
             ("NextToken", False, "string"),
         ],
     },
+    "ListUserSeatUsages": {
+        "group": "user_seat_quotas",
+        "method": "GET",
+        "summary": "List seat usage records for users in an ArkClaw space.",
+        "params": [
+            ("SpaceId", True, "string"),
+            ("UserIds.N", False, "string[]"),
+            ("MaxResults", False, "integer"),
+            ("NextToken", False, "string"),
+        ],
+    },
+    "UpdateUserSeatQuotas": {
+        "group": "user_seat_quotas",
+        "method": "POST",
+        "summary": "Update seat quotas for one or more users in an ArkClaw space.",
+        "params": [
+            ("SpaceId", True, "string"),
+            ("UserIds.N", True, "string[]"),
+            ("Quotas", True, "object[]"),
+            ("Quotas.N.SeatType", False, "string"),
+            ("Quotas.N.Quota", False, "string"),
+        ],
+    },
     "GetClawInstanceTerminalToken": {
         "group": "instances",
         "method": "GET",

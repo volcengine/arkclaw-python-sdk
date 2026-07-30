@@ -100,6 +100,8 @@ User seat quotas:
 |---|---|---|
 | `GetUserSeatQuota` | `client.user_seat_quotas.get` | `arkclaw user-seat-quota get` |
 | `ListUserSeatQuotas` | `client.user_seat_quotas.list` | `arkclaw user-seat-quota list` |
+| `ListUserSeatUsages` | `client.user_seat_quotas.list_usages` | `arkclaw user-seat-quota list-usages` |
+| `UpdateUserSeatQuotas` | `client.user_seat_quotas.update_many` | `arkclaw user-seat-quota update-many` |
 
 Additional SDK workflows include `wait_for_instance`, `provision_instance`, and
 `prepare_chat_access` under `client.workflows`.
@@ -277,7 +279,7 @@ Supported command groups and subcommands:
 | `user` | `create`, `create-many`, `update`, `delete`, `list` |
 | `instance` | `create`, `update-model`, `chat-token`, `get`, `update-channel`, `list`, `start`, `stop`, `reset`, `update`, `delete`, `delete-many`, `terminal-token`, `wait` |
 | `snapshot` | `create`, `get`, `list`, `delete`, `restore` |
-| `user-seat-quota` | `get`, `list` |
+| `user-seat-quota` | `get`, `list`, `list-usages`, `update-many` |
 | `message` | `send`, `shell` |
 
 Selected examples:

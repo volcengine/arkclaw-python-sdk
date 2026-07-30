@@ -38,6 +38,13 @@ All notable changes to this project will be documented in this file.
 - `ListUserSeatQuotas`: `client.user_seat_quotas.list` and
   `arkclaw user-seat-quota list` for paginated seat quota lookup with optional
   `UserIds` filter.
+- `ListUserSeatUsages`: `client.user_seat_quotas.list_usages` and
+  `arkclaw user-seat-quota list-usages` for paginated seat usage lookup with
+  optional `UserIds` filter.
+- `UpdateUserSeatQuotas`: `client.user_seat_quotas.update_many` and
+  `arkclaw user-seat-quota update-many` for batch-updating seat quotas across
+  users; supports snake_case `quotas=[{"seat_type": ..., "quota": ...}]` input
+  which is normalised to the PascalCase payload expected by the API.
 
 ### Changed
 

@@ -146,6 +146,15 @@ def _pascalize_tag_filter(tag_filter: dict[str, Any]) -> dict[str, Any]:
     }
 
 
+def _pascalize_seat_quota(quota: dict[str, Any]) -> dict[str, Any]:
+    mapping = {"seat_type": "SeatType", "quota": "Quota"}
+    return {
+        mapping.get(key, key): value
+        for key, value in quota.items()
+        if value is not None
+    }
+
+
 _USER_FILTER_KEY_MAP = {
     "department_uid": "DepartmentUid",
     "department_uid_recursive": "DepartmentUidRecursive",
@@ -812,6 +821,50 @@ class UserSeatQuotaOperations(ResourceBase):
             }
         )
         return self.invoke("ListUserSeatQuotas", payload=payload, runtime_options=runtime_options)
+
+    def list_usages(
+        self,
+        *,
+        space_id: str,
+        user_ids: Optional[list[str]] = None,
+        max_results: Optional[int] = None,
+        next_token: Optional[str] = None,
+        runtime_options: Optional[RuntimeOptions] = None,
+    ) -> dict[str, Any]:
+        payload = _compact_dict(
+            {
+                "space_id": space_id,
+                "user_ids": user_ids,
+                "max_results": max_results,
+                "next_token": next_token,
+            }
+        )
+        return self.invoke("ListUserSeatUsages", payload=payload, runtime_options=runtime_options)
+
+    def update_many(
+        self,
+        *,
+        space_id: str,
+        user_ids: list[str],
+        quotas: list[dict[str, Any]],
+        runtime_options: Optional[RuntimeOptions] = None,
+    ) -> dict[str, Any]:
+        if not quotas:
+            raise ValidationError("Action UpdateUserSeatQuotas requires at least one quota entry.")
+        normalized_quotas = [_pascalize_seat_quota(item) for item in quotas]
+        for entry in normalized_quotas:
+            if not entry.get("SeatType") or not entry.get("Quota"):
+                raise ValidationError(
+                    "Each Quotas entry must include both SeatType and Quota."
+                )
+        payload = _compact_dict(
+            {
+                "space_id": space_id,
+                "user_ids": user_ids,
+                "Quotas": normalized_quotas,
+            }
+        )
+        return self.invoke("UpdateUserSeatQuotas", payload=payload, runtime_options=runtime_options)
 
 
 class ArkClawClient:

@@ -15,6 +15,7 @@
 from __future__ import annotations
 
 import argparse
+import json
 
 from ._common import build_client, emit
 
@@ -36,6 +37,23 @@ def register(subparsers: argparse._SubParsersAction) -> None:  # type: ignore[ty
     p.add_argument("--next-token", default=None)
     p.set_defaults(func=_list)
 
+    p = sub.add_parser("list-usages", help="List seat usages for users in a space")
+    p.add_argument("--space-id", required=True)
+    p.add_argument("--user-id", dest="user_ids", action="append", default=None)
+    p.add_argument("--max-results", type=int, default=None)
+    p.add_argument("--next-token", default=None)
+    p.set_defaults(func=_list_usages)
+
+    p = sub.add_parser("update-many", help="Batch update seat quotas for users")
+    p.add_argument("--space-id", required=True)
+    p.add_argument("--user-id", dest="user_ids", action="append", required=True)
+    p.add_argument(
+        "--quotas-json",
+        required=True,
+        help='JSON array like [{"seat_type":"Starter","quota":"10"}]',
+    )
+    p.set_defaults(func=_update_many)
+
 
 def _get(args: argparse.Namespace) -> None:
     client = build_client(args)
@@ -50,5 +68,31 @@ def _list(args: argparse.Namespace) -> None:
             user_ids=args.user_ids,
             max_results=args.max_results,
             next_token=args.next_token,
+        )
+    )
+
+
+def _list_usages(args: argparse.Namespace) -> None:
+    client = build_client(args)
+    emit(
+        client.user_seat_quotas.list_usages(
+            space_id=args.space_id,
+            user_ids=args.user_ids,
+            max_results=args.max_results,
+            next_token=args.next_token,
+        )
+    )
+
+
+def _update_many(args: argparse.Namespace) -> None:
+    client = build_client(args)
+    quotas = json.loads(args.quotas_json)
+    if not isinstance(quotas, list) or not all(isinstance(item, dict) for item in quotas):
+        raise ValueError("--quotas-json must be a JSON array of objects")
+    emit(
+        client.user_seat_quotas.update_many(
+            space_id=args.space_id,
+            user_ids=args.user_ids,
+            quotas=quotas,
         )
     )
