@@ -777,6 +777,24 @@ class SnapshotOperations(ResourceBase):
         )
 
 
+class UserSeatQuotaOperations(ResourceBase):
+    actions = GROUP_TO_ACTIONS["user_seat_quotas"]
+
+    def get(
+        self,
+        *,
+        space_id: str,
+        user_id: str,
+        runtime_options: Optional[RuntimeOptions] = None,
+    ) -> dict[str, Any]:
+        return self.invoke(
+            "GetUserSeatQuota",
+            space_id=space_id,
+            user_id=user_id,
+            runtime_options=runtime_options,
+        )
+
+
 class ArkClawClient:
     def __init__(
         self,
@@ -839,6 +857,7 @@ class ArkClawClient:
         self.users = UserOperations(self)
         self.instances = InstanceOperations(self)
         self.snapshots = SnapshotOperations(self)
+        self.user_seat_quotas = UserSeatQuotaOperations(self)
 
         from .workflows import ArkClawWorkflows
 

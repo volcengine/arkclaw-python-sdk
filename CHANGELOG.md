@@ -32,6 +32,9 @@ All notable changes to this project will be documented in this file.
   `DeleteClawInstanceSnapshot`, and `RestoreClawInstanceSnapshot` exposed as
   `client.snapshots.{create,get,list,delete,restore}` and the
   `arkclaw snapshot ...` CLI command group.
+- `GetUserSeatQuota`: `client.user_seat_quotas.get` and
+  `arkclaw user-seat-quota get` for retrieving seat quota detail of a single
+  user in an ArkClaw space; introduces the `user_seat_quotas` resource group.
 
 ### Changed
 
