@@ -794,6 +794,25 @@ class UserSeatQuotaOperations(ResourceBase):
             runtime_options=runtime_options,
         )
 
+    def list(
+        self,
+        *,
+        space_id: str,
+        user_ids: Optional[list[str]] = None,
+        max_results: Optional[int] = None,
+        next_token: Optional[str] = None,
+        runtime_options: Optional[RuntimeOptions] = None,
+    ) -> dict[str, Any]:
+        payload = _compact_dict(
+            {
+                "space_id": space_id,
+                "user_ids": user_ids,
+                "max_results": max_results,
+                "next_token": next_token,
+            }
+        )
+        return self.invoke("ListUserSeatQuotas", payload=payload, runtime_options=runtime_options)
+
 
 class ArkClawClient:
     def __init__(

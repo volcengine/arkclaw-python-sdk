@@ -35,6 +35,9 @@ All notable changes to this project will be documented in this file.
 - `GetUserSeatQuota`: `client.user_seat_quotas.get` and
   `arkclaw user-seat-quota get` for retrieving seat quota detail of a single
   user in an ArkClaw space; introduces the `user_seat_quotas` resource group.
+- `ListUserSeatQuotas`: `client.user_seat_quotas.list` and
+  `arkclaw user-seat-quota list` for paginated seat quota lookup with optional
+  `UserIds` filter.
 
 ### Changed
 

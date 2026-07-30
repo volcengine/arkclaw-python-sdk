@@ -482,6 +482,17 @@ RAW_ACTION_SPECS: dict[str, RawActionSpec] = {
             ("UserId", True, "string"),
         ],
     },
+    "ListUserSeatQuotas": {
+        "group": "user_seat_quotas",
+        "method": "GET",
+        "summary": "List seat quota records for users in an ArkClaw space.",
+        "params": [
+            ("SpaceId", True, "string"),
+            ("UserIds.N", False, "string[]"),
+            ("MaxResults", False, "integer"),
+            ("NextToken", False, "string"),
+        ],
+    },
     "GetClawInstanceTerminalToken": {
         "group": "instances",
         "method": "GET",
