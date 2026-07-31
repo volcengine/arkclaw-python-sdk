@@ -4,53 +4,62 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 
+## [0.2.0] - 2026-07-31
+
 ### Added
+
+Spaces:
 
 - `GetClawSpace`: `client.spaces.get` and `arkclaw space get` for retrieving
   ArkClaw space detail (endpoints, auth type, status, APM ID).
 - `ListUsersModelConfig`: `client.spaces.list_users_model_config` and
   `arkclaw space list-users-model-config` for paginated user model
   configuration lookup with optional `UserIds` filter.
+
+Users:
+
 - `ListUsers`: `client.users.list` and `arkclaw user list` for listing users
   in a space with department, group, email, phone, name, and user-ID filters.
-- `ListClawInstances`: completed SDK and CLI filters for billing type and
-  user IDs in addition to existing pagination, instance, status, seat, recycled,
-  and tag filters.
+
+Instances:
+
 - `DeleteClawInstances`: `client.instances.delete_many` and
   `arkclaw instance delete-many` for deleting multiple ClawInstances in one
   OpenAPI request while preserving per-instance operation details.
-- `CreateClawInstance`: new optional parameters `EnableHeadless`,
-  `ClientToken`, `DryRun` on `client.instances.create` and
-  `arkclaw instance create`.
-- `UpdateClawInstance`: reassign or unbind the owning user via
-  `client.instances.update(user_id=...)` / `arkclaw instance update --user-id`,
-  which populates `Patch.UserId` and `FieldMask.Paths=[Patch.UserId]`
-  under the hood. Omitting `user_id` leaves the binding untouched; passing an
-  empty string or `None` unbinds the current user.
-- Snapshot lifecycle: `CreateClawInstanceSnapshots`,
-  `GetClawInstanceSnapshot`, `ListClawInstanceSnapshots`,
-  `DeleteClawInstanceSnapshot`, and `RestoreClawInstanceSnapshot` exposed as
+
+Snapshots (new resource group):
+
+- `CreateClawInstanceSnapshots`, `GetClawInstanceSnapshot`,
+  `ListClawInstanceSnapshots`, `DeleteClawInstanceSnapshot`, and
+  `RestoreClawInstanceSnapshot` exposed as
   `client.snapshots.{create,get,list,delete,restore}` and the
   `arkclaw snapshot ...` CLI command group.
-- `GetUserSeatQuota`: `client.user_seat_quotas.get` and
-  `arkclaw user-seat-quota get` for retrieving seat quota detail of a single
-  user in an ArkClaw space; introduces the `user_seat_quotas` resource group.
-- `ListUserSeatQuotas`: `client.user_seat_quotas.list` and
-  `arkclaw user-seat-quota list` for paginated seat quota lookup with optional
-  `UserIds` filter.
-- `ListUserSeatUsages`: `client.user_seat_quotas.list_usages` and
-  `arkclaw user-seat-quota list-usages` for paginated seat usage lookup with
-  optional `UserIds` filter.
-- `UpdateUserSeatQuotas`: `client.user_seat_quotas.update_many` and
-  `arkclaw user-seat-quota update-many` for batch-updating seat quotas across
-  users; supports snake_case `quotas=[{"seat_type": ..., "quota": ...}]` input
-  which is normalised to the PascalCase payload expected by the API.
+
+User seat quotas (new resource group):
+
+- `GetUserSeatQuota`: `client.user_seat_quotas.get` /
+  `arkclaw user-seat-quota get`.
+- `ListUserSeatQuotas`: `client.user_seat_quotas.list` /
+  `arkclaw user-seat-quota list`.
+- `ListUserSeatUsages`: `client.user_seat_quotas.list_usages` /
+  `arkclaw user-seat-quota list-usages`.
+- `UpdateUserSeatQuotas`: `client.user_seat_quotas.update_many` /
+  `arkclaw user-seat-quota update-many`.
 
 ### Changed
 
-- `CreateClawInstance`: `UserId` is now optional (was required).
+- `CreateClawInstance`: `UserId` is now optional (was required). Added
+  optional `EnableHeadless`, `ClientToken`, `DryRun` parameters on
+  `client.instances.create` and `arkclaw instance create`.
+- `UpdateClawInstance`: reassign or unbind the owning user via
+  `client.instances.update(user_id=...)` / `arkclaw instance update --user-id`,
+  which populates `Patch.UserId` and `FieldMask.Paths=[Patch.UserId]` under
+  the hood. Omitting `user_id` leaves the binding untouched; passing an empty
+  string or `None` unbinds the current user.
+- `ListClawInstances`: added `billing_type` and `user_ids` filters alongside
+  the existing pagination, instance, status, seat, recycled, and tag filters.
 - `CreateUsers`: spec explicitly declares `Users` as a required `object[]`;
-  user element fields remain the same.
+  user element fields are unchanged.
 
 ### Fixed
 
