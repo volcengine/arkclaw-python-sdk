@@ -153,7 +153,15 @@ def _render_stream_message(data: str, *, pretty: bool, text_only: bool) -> list[
     return []
 
 
-def _build_websocket_url(*, endpoint: str, chat_token: str, claw_instance_id: str) -> str:
+def _build_websocket_url(
+    *,
+    endpoint: str,
+    chat_token: str,
+    claw_instance_id: str,
+    default_scheme: str = "wss",
+) -> str:
+    if default_scheme not in ("ws", "wss"):
+        raise ValidationError(f"ws_scheme must be 'ws' or 'wss', got {default_scheme!r}")
     normalized = endpoint.strip()
     if normalized.startswith("wss://") or normalized.startswith("ws://"):
         base = normalized
@@ -162,7 +170,7 @@ def _build_websocket_url(*, endpoint: str, chat_token: str, claw_instance_id: st
     elif normalized.startswith("http://"):
         base = "ws://" + normalized[len("http://") :]
     else:
-        base = f"wss://{normalized}"
+        base = f"{default_scheme}://{normalized}"
 
     if "?" not in base:
         scheme_split = base.split("://", 1)
@@ -235,9 +243,12 @@ class ArkClawMessageSession:
         connect_retries: int = 2,
         session_key: str = "agent:main:main",
         protocol_version: int = 4,
+        ws_scheme: str = "wss",
     ) -> None:
         if connect_retries < 0:
             raise ValidationError("connect_retries must be >= 0")
+        if ws_scheme not in ("ws", "wss"):
+            raise ValidationError(f"ws_scheme must be 'ws' or 'wss', got {ws_scheme!r}")
         self.client = client
         self.space_id = space_id
         self.instance_id = instance_id
@@ -251,6 +262,7 @@ class ArkClawMessageSession:
         if protocol_version not in (3, 4):
             raise ValidationError(f"protocol_version must be 3 or 4, got {protocol_version}")
         self.protocol_version = protocol_version
+        self.ws_scheme = ws_scheme
 
         self._websocket_module: Any | None = None
         self._timeout_exc: type[BaseException] = TimeoutError
@@ -438,6 +450,7 @@ class ArkClawMessageSession:
             endpoint=endpoint,
             chat_token=chat_token,
             claw_instance_id=claw_instance_id,
+            default_scheme=self.ws_scheme,
         )
 
     def _get_websocket_module(self) -> Any:

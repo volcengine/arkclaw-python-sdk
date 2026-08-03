@@ -383,6 +383,7 @@ with client.create_message_session(
     instance_id="ci-xxx",
     wait=True,
     receive_timeout=120,
+    ws_scheme="wss",  # optional; when set, use the declared protocol
 ) as session:
     result = session.send_message("你好")
     print(result)
@@ -396,7 +397,8 @@ arkclaw message send \
   --instance-id ci-xxx \
   --message "你好" \
   --stream \
-  --text-only
+  --text-only \
+  --ws-scheme wss   # optional; when set, use the declared protocol
 
 arkclaw message shell \
   --space-id csi-xxx \

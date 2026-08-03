@@ -4,6 +4,15 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 
+### Added
+
+- Message sessions accept an explicit `ws_scheme` (`"ws"` or `"wss"`, default
+  `"wss"`) so callers can dial `ws://` when the ArkClaw endpoint returned by
+  `GetClawInstanceChatToken` has no protocol prefix and the environment only
+  exposes plain WebSocket. The new `arkclaw message send|shell --ws-scheme`
+  CLI flag mirrors the SDK option. Endpoints already carrying an explicit
+  `http(s)://` / `ws(s)://` prefix keep their scheme.
+
 ## [0.2.0] - 2026-07-31
 
 ### Added

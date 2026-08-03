@@ -62,6 +62,12 @@ def _add_common_session_args(parser: argparse.ArgumentParser) -> None:
         default="agent:main:main",
         help="Logical ArkClaw chat session key to reuse across reconnects",
     )
+    parser.add_argument(
+        "--ws-scheme",
+        choices=["ws", "wss"],
+        default="wss",
+        help="WebSocket scheme to use when the token endpoint has no protocol prefix (default: wss)",
+    )
 
 
 def _build_session(args: argparse.Namespace) -> ArkClawMessageSession:
@@ -76,6 +82,7 @@ def _build_session(args: argparse.Namespace) -> ArkClawMessageSession:
         receive_timeout=args.receive_timeout,
         connect_retries=args.connect_retries,
         session_key=args.session_key,
+        ws_scheme=args.ws_scheme,
     )
 
 
