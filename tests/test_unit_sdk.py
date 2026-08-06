@@ -77,7 +77,7 @@ class SignerTests(unittest.TestCase):
 
 class SpecTests(unittest.TestCase):
     def test_expected_resource_groups_are_registered(self) -> None:
-        self.assertEqual(set(GROUP_TO_ACTIONS), {"command_jobs", "spaces", "users", "instances", "snapshots", "user_seat_quotas"})
+        self.assertEqual(set(GROUP_TO_ACTIONS), {"command_jobs", "spaces", "users", "instances", "snapshots", "user_seat_quotas", "images"})
         self.assertIn("CreateClawInstanceCommandJob", ACTION_SPECS)
         self.assertEqual(ACTION_SPECS["ListClawInstances"].method, "GET")
 

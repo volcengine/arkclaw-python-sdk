@@ -6,6 +6,10 @@ All notable changes to this project will be documented in this file.
 
 ### Added
 
+- Read-only ClawImage APIs: `ListClawImages`, `GetClawImage`, and
+  `GetBaseImageManifest` exposed as `client.images.{list,get,get_base_manifest}`
+  and the `arkclaw image {list,get,get-base-manifest}` CLI command group.
+  Introduces the new `images` resource group.
 - Message sessions accept an explicit `ws_scheme` (`"ws"` or `"wss"`, default
   `"wss"`) so callers can dial `ws://` when the ArkClaw endpoint returned by
   `GetClawInstanceChatToken` has no protocol prefix and the environment only

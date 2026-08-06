@@ -103,6 +103,14 @@ User seat quotas:
 | `ListUserSeatUsages` | `client.user_seat_quotas.list_usages` | `arkclaw user-seat-quota list-usages` |
 | `UpdateUserSeatQuotas` | `client.user_seat_quotas.update_many` | `arkclaw user-seat-quota update-many` |
 
+Images:
+
+| OpenAPI action | SDK method | CLI command |
+|---|---|---|
+| `ListClawImages` | `client.images.list` | `arkclaw image list` |
+| `GetClawImage` | `client.images.get` | `arkclaw image get` |
+| `GetBaseImageManifest` | `client.images.get_base_manifest` | `arkclaw image get-base-manifest` |
+
 Additional SDK workflows include `wait_for_instance`, `provision_instance`, and
 `prepare_chat_access` under `client.workflows`.
 
@@ -280,6 +288,7 @@ Supported command groups and subcommands:
 | `instance` | `create`, `update-model`, `chat-token`, `get`, `update-channel`, `list`, `start`, `stop`, `reset`, `update`, `delete`, `delete-many`, `terminal-token`, `wait` |
 | `snapshot` | `create`, `get`, `list`, `delete`, `restore` |
 | `user-seat-quota` | `get`, `list`, `list-usages`, `update-many` |
+| `image` | `list`, `get`, `get-base-manifest` |
 | `message` | `send`, `shell` |
 
 Selected examples:

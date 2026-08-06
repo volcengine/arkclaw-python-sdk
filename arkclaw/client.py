@@ -867,6 +867,65 @@ class UserSeatQuotaOperations(ResourceBase):
         return self.invoke("UpdateUserSeatQuotas", payload=payload, runtime_options=runtime_options)
 
 
+class ImageOperations(ResourceBase):
+    actions = GROUP_TO_ACTIONS["images"]
+
+    def list(
+        self,
+        *,
+        space_id: str,
+        image_ids: Optional[list[str]] = None,
+        name: Optional[str] = None,
+        types: Optional[list[str]] = None,
+        statuses: Optional[list[str]] = None,
+        user_id: Optional[str] = None,
+        creators: Optional[list[str]] = None,
+        max_results: Optional[int] = None,
+        next_token: Optional[str] = None,
+        runtime_options: Optional[RuntimeOptions] = None,
+    ) -> dict[str, Any]:
+        payload = _compact_dict(
+            {
+                "space_id": space_id,
+                "image_ids": image_ids,
+                "name": name,
+                "types": types,
+                "statuses": statuses,
+                "user_id": user_id,
+                "creators": creators,
+                "max_results": max_results,
+                "next_token": next_token,
+            }
+        )
+        return self.invoke("ListClawImages", payload=payload, runtime_options=runtime_options)
+
+    def get(
+        self,
+        *,
+        space_id: str,
+        image_id: str,
+        user_id: Optional[str] = None,
+        runtime_options: Optional[RuntimeOptions] = None,
+    ) -> dict[str, Any]:
+        return self.invoke(
+            "GetClawImage",
+            space_id=space_id,
+            image_id=image_id,
+            user_id=user_id,
+            runtime_options=runtime_options,
+        )
+
+    def get_base_manifest(
+        self,
+        *,
+        runtime_options: Optional[RuntimeOptions] = None,
+    ) -> dict[str, Any]:
+        return self.invoke(
+            "GetBaseImageManifest",
+            runtime_options=runtime_options,
+        )
+
+
 class ArkClawClient:
     def __init__(
         self,
@@ -930,6 +989,7 @@ class ArkClawClient:
         self.instances = InstanceOperations(self)
         self.snapshots = SnapshotOperations(self)
         self.user_seat_quotas = UserSeatQuotaOperations(self)
+        self.images = ImageOperations(self)
 
         from .workflows import ArkClawWorkflows
 

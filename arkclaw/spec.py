@@ -516,6 +516,38 @@ RAW_ACTION_SPECS: dict[str, RawActionSpec] = {
             ("Quotas.N.Quota", False, "string"),
         ],
     },
+    "ListClawImages": {
+        "group": "images",
+        "method": "GET",
+        "summary": "List ArkClaw images in a space with optional filters.",
+        "params": [
+            ("SpaceId", True, "string"),
+            ("NextToken", False, "string"),
+            ("MaxResults", False, "integer"),
+            ("ImageIds.N", False, "string[]"),
+            ("Name", False, "string"),
+            ("Types.N", False, "string[]"),
+            ("Statuses.N", False, "string[]"),
+            ("UserId", False, "string"),
+            ("Creators.N", False, "string[]"),
+        ],
+    },
+    "GetClawImage": {
+        "group": "images",
+        "method": "GET",
+        "summary": "Get ArkClaw image detail.",
+        "params": [
+            ("SpaceId", True, "string"),
+            ("ImageId", True, "string"),
+            ("UserId", False, "string"),
+        ],
+    },
+    "GetBaseImageManifest": {
+        "group": "images",
+        "method": "GET",
+        "summary": "Get the base image manifest (skills, plugins, soul.md, agent.md).",
+        "params": [],
+    },
     "GetClawInstanceTerminalToken": {
         "group": "instances",
         "method": "GET",
