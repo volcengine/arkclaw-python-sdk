@@ -19,7 +19,7 @@ from .message import ArkClawMessageSession
 from .spec import ACTION_SPECS, DEFAULT_VERSION, GROUP_TO_ACTIONS
 from .workflows import ArkClawWorkflows
 
-__version__ = "0.2.0"
+__version__ = "0.3.0"
 
 __all__ = [
     "ACTION_SPECS",

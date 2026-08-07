@@ -4,26 +4,17 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 
+## [0.3.0] - 2026-08-07
+
 ### Added
 
-- Read-only ClawImage APIs: `ListClawImages`, `GetClawImage`, and
-  `GetBaseImageManifest` exposed as `client.images.{list,get,get_base_manifest}`
-  and the `arkclaw image {list,get,get-base-manifest}` CLI command group.
-  Introduces the new `images` resource group.
-- ClawImage write APIs: `CreateClawImage`, `CreateClawImageFromYaml`,
-  `UpdateClawImage`, and `DeleteClawImage` exposed as
-  `client.images.{create,create_from_yaml,update,delete}` and the
-  `arkclaw image {create,create-from-yaml,update,delete}` CLI subcommands.
-  Base64 fields (`soul_md`, `agent_md`, `build_script`, `yaml_content`) are
-  validated client-side; non-base64 input raises `ValidationError`.
-  `plugin_infos` / `skill_infos` accept snake_case dicts and are normalised to
-  the PascalCase payload expected by the API.
+- New `images` resource group covering the complete ClawImage lifecycle: list,
+  get, create (structured or from base64 YAML), update, delete, and base image
+  manifest lookup. Exposed as `client.images.*` and the `arkclaw image ...` CLI
+  command group.
 - Message sessions accept an explicit `ws_scheme` (`"ws"` or `"wss"`, default
-  `"wss"`) so callers can dial `ws://` when the ArkClaw endpoint returned by
-  `GetClawInstanceChatToken` has no protocol prefix and the environment only
-  exposes plain WebSocket. The new `arkclaw message send|shell --ws-scheme`
-  CLI flag mirrors the SDK option. Endpoints already carrying an explicit
-  `http(s)://` / `ws(s)://` prefix keep their scheme.
+  `"wss"`), mirrored as `arkclaw message {send,shell} --ws-scheme`, allowing
+  callers to explicitly specify the WebSocket protocol.
 
 ## [0.2.0] - 2026-07-31
 
