@@ -10,6 +10,14 @@ All notable changes to this project will be documented in this file.
   `GetBaseImageManifest` exposed as `client.images.{list,get,get_base_manifest}`
   and the `arkclaw image {list,get,get-base-manifest}` CLI command group.
   Introduces the new `images` resource group.
+- ClawImage write APIs: `CreateClawImage`, `CreateClawImageFromYaml`,
+  `UpdateClawImage`, and `DeleteClawImage` exposed as
+  `client.images.{create,create_from_yaml,update,delete}` and the
+  `arkclaw image {create,create-from-yaml,update,delete}` CLI subcommands.
+  Base64 fields (`soul_md`, `agent_md`, `build_script`, `yaml_content`) are
+  validated client-side; non-base64 input raises `ValidationError`.
+  `plugin_infos` / `skill_infos` accept snake_case dicts and are normalised to
+  the PascalCase payload expected by the API.
 - Message sessions accept an explicit `ws_scheme` (`"ws"` or `"wss"`, default
   `"wss"`) so callers can dial `ws://` when the ArkClaw endpoint returned by
   `GetClawInstanceChatToken` has no protocol prefix and the environment only

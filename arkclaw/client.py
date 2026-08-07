@@ -155,6 +155,59 @@ def _pascalize_seat_quota(quota: dict[str, Any]) -> dict[str, Any]:
     }
 
 
+_IMAGE_PLUGIN_KEY_MAP = {
+    "id": "Id",
+    "name": "Name",
+    "display_name": "DisplayName",
+    "source": "Source",
+    "blacklist": "Blacklist",
+    "type": "Type",
+    "description": "Description",
+    "version": "Version",
+}
+
+
+_IMAGE_SKILL_KEY_MAP = {
+    "name": "Name",
+    "description": "Description",
+    "display_name": "DisplayName",
+    "blacklist": "Blacklist",
+    "slug": "Slug",
+    "type": "Type",
+    "is_private": "IsPrivate",
+    "id": "Id",
+}
+
+
+def _pascalize_image_plugin(plugin: dict[str, Any]) -> dict[str, Any]:
+    return {
+        _IMAGE_PLUGIN_KEY_MAP.get(key, key): value
+        for key, value in plugin.items()
+        if value is not None
+    }
+
+
+def _pascalize_image_skill(skill: dict[str, Any]) -> dict[str, Any]:
+    return {
+        _IMAGE_SKILL_KEY_MAP.get(key, key): value
+        for key, value in skill.items()
+        if value is not None
+    }
+
+
+def _ensure_base64(field: str, value: Optional[str]) -> Optional[str]:
+    if value is None:
+        return None
+    if not isinstance(value, str):
+        raise ValidationError(f"{field} must be a base64-encoded string, got {type(value).__name__}.")
+    try:
+        import base64
+        base64.b64decode(value, validate=True)
+    except Exception as exc:
+        raise ValidationError(f"{field} must be a valid base64 string: {exc}") from exc
+    return value
+
+
 _USER_FILTER_KEY_MAP = {
     "department_uid": "DepartmentUid",
     "department_uid_recursive": "DepartmentUidRecursive",
@@ -922,6 +975,103 @@ class ImageOperations(ResourceBase):
     ) -> dict[str, Any]:
         return self.invoke(
             "GetBaseImageManifest",
+            runtime_options=runtime_options,
+        )
+
+    def create(
+        self,
+        *,
+        space_id: str,
+        name: str,
+        description: Optional[str] = None,
+        plugin_infos: Optional[list[dict[str, Any]]] = None,
+        skill_infos: Optional[list[dict[str, Any]]] = None,
+        soul_md: Optional[str] = None,
+        agent_md: Optional[str] = None,
+        build_script: Optional[str] = None,
+        user_id: Optional[str] = None,
+        dry_run: Optional[bool] = None,
+        client_token: Optional[str] = None,
+        md_edit_mode: Optional[str] = None,
+        runtime_options: Optional[RuntimeOptions] = None,
+    ) -> dict[str, Any]:
+        payload = _compact_dict(
+            {
+                "space_id": space_id,
+                "name": name,
+                "description": description,
+                "PluginInfos": [_pascalize_image_plugin(item) for item in plugin_infos] if plugin_infos else None,
+                "SkillInfos": [_pascalize_image_skill(item) for item in skill_infos] if skill_infos else None,
+                "SoulMd": _ensure_base64("soul_md", soul_md),
+                "AgentMd": _ensure_base64("agent_md", agent_md),
+                "BuildScript": _ensure_base64("build_script", build_script),
+                "user_id": user_id,
+                "dry_run": dry_run,
+                "client_token": client_token,
+                "md_edit_mode": md_edit_mode,
+            }
+        )
+        return self.invoke("CreateClawImage", payload=payload, runtime_options=runtime_options)
+
+    def create_from_yaml(
+        self,
+        *,
+        space_id: str,
+        yaml_content: str,
+        user_id: Optional[str] = None,
+        dry_run: Optional[bool] = None,
+        client_token: Optional[str] = None,
+        runtime_options: Optional[RuntimeOptions] = None,
+    ) -> dict[str, Any]:
+        payload = _compact_dict(
+            {
+                "space_id": space_id,
+                "YamlContent": _ensure_base64("yaml_content", yaml_content),
+                "user_id": user_id,
+                "dry_run": dry_run,
+                "client_token": client_token,
+            }
+        )
+        return self.invoke("CreateClawImageFromYaml", payload=payload, runtime_options=runtime_options)
+
+    def update(
+        self,
+        *,
+        space_id: str,
+        image_id: str,
+        name: Optional[str] = None,
+        description: Optional[str] = None,
+        user_id: Optional[str] = None,
+        dry_run: Optional[bool] = None,
+        runtime_options: Optional[RuntimeOptions] = None,
+    ) -> dict[str, Any]:
+        payload = _compact_dict(
+            {
+                "space_id": space_id,
+                "image_id": image_id,
+                "name": name,
+                "description": description,
+                "user_id": user_id,
+                "dry_run": dry_run,
+            }
+        )
+        return self.invoke("UpdateClawImage", payload=payload, runtime_options=runtime_options)
+
+    def delete(
+        self,
+        *,
+        space_id: str,
+        image_id: str,
+        user_id: Optional[str] = None,
+        dry_run: Optional[bool] = None,
+        runtime_options: Optional[RuntimeOptions] = None,
+    ) -> dict[str, Any]:
+        return self.invoke(
+            "DeleteClawImage",
+            space_id=space_id,
+            image_id=image_id,
+            user_id=user_id,
+            dry_run=dry_run,
             runtime_options=runtime_options,
         )
 

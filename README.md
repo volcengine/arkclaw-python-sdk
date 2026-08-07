@@ -110,6 +110,10 @@ Images:
 | `ListClawImages` | `client.images.list` | `arkclaw image list` |
 | `GetClawImage` | `client.images.get` | `arkclaw image get` |
 | `GetBaseImageManifest` | `client.images.get_base_manifest` | `arkclaw image get-base-manifest` |
+| `CreateClawImage` | `client.images.create` | `arkclaw image create` |
+| `CreateClawImageFromYaml` | `client.images.create_from_yaml` | `arkclaw image create-from-yaml` |
+| `UpdateClawImage` | `client.images.update` | `arkclaw image update` |
+| `DeleteClawImage` | `client.images.delete` | `arkclaw image delete` |
 
 Additional SDK workflows include `wait_for_instance`, `provision_instance`, and
 `prepare_chat_access` under `client.workflows`.
@@ -288,7 +292,7 @@ Supported command groups and subcommands:
 | `instance` | `create`, `update-model`, `chat-token`, `get`, `update-channel`, `list`, `start`, `stop`, `reset`, `update`, `delete`, `delete-many`, `terminal-token`, `wait` |
 | `snapshot` | `create`, `get`, `list`, `delete`, `restore` |
 | `user-seat-quota` | `get`, `list`, `list-usages`, `update-many` |
-| `image` | `list`, `get`, `get-base-manifest` |
+| `image` | `list`, `get`, `get-base-manifest`, `create`, `create-from-yaml`, `update`, `delete` |
 | `message` | `send`, `shell` |
 
 Selected examples:
