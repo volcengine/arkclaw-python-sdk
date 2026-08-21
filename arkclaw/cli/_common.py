@@ -163,6 +163,18 @@ def emit(data: Any, *, file: Any = None) -> None:
     print(json.dumps(data, ensure_ascii=False, indent=2), file=file or sys.stdout)
 
 
+def parse_bool_arg(value: Any) -> bool | None:
+    """Convert an argparse tri-state string flag to ``bool | None``.
+
+    Used with ``add_argument(..., choices=["true", "false"], default=None)``:
+    ``None`` -> ``None`` (flag not provided);
+    ``"true"`` -> ``True``; ``"false"`` -> ``False``.
+    """
+    if value is None:
+        return None
+    return value == "true"
+
+
 def info(message: str) -> None:
     """Print an informational message to stderr."""
     print(message, file=sys.stderr)

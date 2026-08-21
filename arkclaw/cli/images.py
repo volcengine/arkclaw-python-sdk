@@ -17,7 +17,7 @@ from __future__ import annotations
 import argparse
 import json
 
-from ._common import build_client, emit
+from ._common import build_client, emit, parse_bool_arg
 
 
 def register(subparsers: argparse._SubParsersAction) -> None:  # type: ignore[type-arg]
@@ -91,10 +91,6 @@ def register(subparsers: argparse._SubParsersAction) -> None:  # type: ignore[ty
     p.set_defaults(func=_delete)
 
 
-def _bool_flag(value):
-    return None if value is None else value == "true"
-
-
 def _load_json_array(flag: str, raw: str | None):
     if raw is None:
         return None
@@ -144,7 +140,7 @@ def _create(args: argparse.Namespace) -> None:
             agent_md=args.agent_md,
             build_script=args.build_script,
             user_id=args.user_id,
-            dry_run=_bool_flag(args.dry_run),
+            dry_run=parse_bool_arg(args.dry_run),
             client_token=args.client_token,
             md_edit_mode=args.md_edit_mode,
         )
@@ -158,7 +154,7 @@ def _create_from_yaml(args: argparse.Namespace) -> None:
             space_id=args.space_id,
             yaml_content=args.yaml_content,
             user_id=args.user_id,
-            dry_run=_bool_flag(args.dry_run),
+            dry_run=parse_bool_arg(args.dry_run),
             client_token=args.client_token,
         )
     )
@@ -173,7 +169,7 @@ def _update(args: argparse.Namespace) -> None:
             name=args.name,
             description=args.description,
             user_id=args.user_id,
-            dry_run=_bool_flag(args.dry_run),
+            dry_run=parse_bool_arg(args.dry_run),
         )
     )
 
@@ -185,6 +181,6 @@ def _delete(args: argparse.Namespace) -> None:
             space_id=args.space_id,
             image_id=args.image_id,
             user_id=args.user_id,
-            dry_run=_bool_flag(args.dry_run),
+            dry_run=parse_bool_arg(args.dry_run),
         )
     )

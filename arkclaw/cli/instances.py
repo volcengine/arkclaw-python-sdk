@@ -18,7 +18,7 @@ import argparse
 import json
 from typing import Any
 
-from ._common import build_client, emit, info
+from ._common import build_client, emit, info, parse_bool_arg
 
 
 _CLI_USER_ID_UNSET = object()
@@ -151,8 +151,8 @@ def register(subparsers: argparse._SubParsersAction) -> None:  # type: ignore[ty
 
 def _create(args: argparse.Namespace) -> None:
     client = build_client(args)
-    enable_headless = None if args.enable_headless is None else args.enable_headless == "true"
-    dry_run = None if args.dry_run is None else args.dry_run == "true"
+    enable_headless = parse_bool_arg(args.enable_headless)
+    dry_run = parse_bool_arg(args.dry_run)
     if args.wait:
         info(f"Creating {args.instance_name} and waiting for Running...")
         result = client.workflows.provision_instance(
@@ -260,7 +260,7 @@ def _start(args: argparse.Namespace) -> None:
 
 def _stop(args: argparse.Namespace) -> None:
     client = build_client(args)
-    dry_run = None if args.dry_run is None else args.dry_run == "true"
+    dry_run = parse_bool_arg(args.dry_run)
     emit(
         client.instances.stop(
             space_id=args.space_id,
@@ -273,7 +273,7 @@ def _stop(args: argparse.Namespace) -> None:
 
 def _reset(args: argparse.Namespace) -> None:
     client = build_client(args)
-    dry_run = None if args.dry_run is None else args.dry_run == "true"
+    dry_run = parse_bool_arg(args.dry_run)
     emit(
         client.instances.reset(
             space_id=args.space_id,
@@ -287,7 +287,7 @@ def _reset(args: argparse.Namespace) -> None:
 
 def _update(args: argparse.Namespace) -> None:
     client = build_client(args)
-    dry_run = None if args.dry_run is None else args.dry_run == "true"
+    dry_run = parse_bool_arg(args.dry_run)
     update_kwargs: dict[str, Any] = dict(
         space_id=args.space_id,
         instance_id=args.instance_id,
@@ -302,8 +302,8 @@ def _update(args: argparse.Namespace) -> None:
 
 def _delete(args: argparse.Namespace) -> None:
     client = build_client(args)
-    recycle = None if args.recycle is None else args.recycle == "true"
-    dry_run = None if args.dry_run is None else args.dry_run == "true"
+    recycle = parse_bool_arg(args.recycle)
+    dry_run = parse_bool_arg(args.dry_run)
     emit(
         client.instances.delete(
             space_id=args.space_id,
@@ -317,8 +317,8 @@ def _delete(args: argparse.Namespace) -> None:
 
 def _delete_many(args: argparse.Namespace) -> None:
     client = build_client(args)
-    recycle = None if args.recycle is None else args.recycle == "true"
-    dry_run = None if args.dry_run is None else args.dry_run == "true"
+    recycle = parse_bool_arg(args.recycle)
+    dry_run = parse_bool_arg(args.dry_run)
     emit(
         client.instances.delete_many(
             space_id=args.space_id,

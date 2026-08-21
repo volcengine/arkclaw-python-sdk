@@ -4,6 +4,18 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 
+### Changed
+
+- Split `arkclaw/client.py` (1618 lines) into three layers: `ArkClawClient`
+  keeps request preparation, signing, and retry; shared payload / pascalize /
+  base64 helpers move to `arkclaw/_helpers.py`; the eight resource classes
+  live under `arkclaw/resources/`. Backward-compatible re-exports keep
+  `from arkclaw.client import ...` working.
+- Consolidated the tri-state boolean CLI flag handling into
+  `arkclaw.cli._common.parse_bool_arg`, replacing two duplicated
+  `_bool_flag` helpers and eight inline expressions across the instance,
+  snapshot, and image subcommands.
+
 ## [0.3.0] - 2026-08-07
 
 ### Added

@@ -16,7 +16,7 @@ from __future__ import annotations
 
 import argparse
 
-from ._common import build_client, emit
+from ._common import build_client, emit, parse_bool_arg
 
 
 def register(subparsers: argparse._SubParsersAction) -> None:  # type: ignore[type-arg]
@@ -60,10 +60,6 @@ def register(subparsers: argparse._SubParsersAction) -> None:  # type: ignore[ty
     p.set_defaults(func=_restore)
 
 
-def _bool_flag(value: str | None) -> bool | None:
-    return None if value is None else value == "true"
-
-
 def _create(args: argparse.Namespace) -> None:
     client = build_client(args)
     emit(
@@ -71,7 +67,7 @@ def _create(args: argparse.Namespace) -> None:
             space_id=args.space_id,
             instance_ids=args.instance_ids,
             client_token=args.client_token,
-            dry_run=_bool_flag(args.dry_run),
+            dry_run=parse_bool_arg(args.dry_run),
         )
     )
 
@@ -101,7 +97,7 @@ def _delete(args: argparse.Namespace) -> None:
             space_id=args.space_id,
             snapshot_id=args.snapshot_id,
             client_token=args.client_token,
-            dry_run=_bool_flag(args.dry_run),
+            dry_run=parse_bool_arg(args.dry_run),
         )
     )
 
@@ -114,6 +110,6 @@ def _restore(args: argparse.Namespace) -> None:
             instance_id=args.instance_id,
             snapshot_id=args.snapshot_id,
             client_token=args.client_token,
-            dry_run=_bool_flag(args.dry_run),
+            dry_run=parse_bool_arg(args.dry_run),
         )
     )
